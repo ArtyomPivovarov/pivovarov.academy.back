@@ -3,11 +3,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  Unique
 } from 'typeorm'
 import { Role } from '@/role/role.enum'
 
 @Entity()
+@Unique('UQ_EMAIL', ['email'])
 export class User {
   @PrimaryGeneratedColumn({ name: 'user_id' })
   id: number
