@@ -13,7 +13,7 @@ import * as bcrypt from 'bcrypt'
 import { CreateUserDto } from '@/user/dto/create-user.dto'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
 import { UserInfoDto } from '@/user/dto/user-info.dto'
-import { UserListDto } from '@/user/dto/user-list.dto'
+import { UsersListDto } from '@/user/dto/users-list.dto'
 
 @Injectable()
 export class UserService {
@@ -49,9 +49,8 @@ export class UserService {
     }
   }
 
-  async findAll(paginationQuery: PaginationQueryDto): Promise<UserListDto> {
+  async findAll({ page, limit }: PaginationQueryDto): Promise<UsersListDto> {
     try {
-      const { page, limit } = paginationQuery
       const [items, totalItems] = await this.userRepository.findAndCount({
         select: {
           id: true,
@@ -128,10 +127,8 @@ export class UserService {
     } catch (error) {
       if (error.constraint === 'UQ_EMAIL') {
         throw new ConflictException('Email already exists')
-      } else if (error instanceof NotFoundException) {
-        throw error
       } else {
-        throw new InternalServerErrorException()
+        throw error
       }
     }
   }

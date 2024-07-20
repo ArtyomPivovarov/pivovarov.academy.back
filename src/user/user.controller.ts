@@ -21,7 +21,7 @@ import {
 } from '@nestjs/swagger'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
 import { UserInfoDto } from '@/user/dto/user-info.dto'
-import { UserListDto } from '@/user/dto/user-list.dto'
+import { UsersListDto } from '@/user/dto/users-list.dto'
 
 @ApiTags('users')
 @Controller('user')
@@ -38,7 +38,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Get all users' })
-  @ApiOkResponse({ description: 'User list', type: UserListDto })
+  @ApiOkResponse({ description: 'Users list', type: UsersListDto })
   @ApiBadRequestResponse({ description: 'Bad request' }) // TODO: set payload type
   @Get()
   async findAll(@Query() paginationQueryDto: PaginationQueryDto) {
@@ -47,7 +47,7 @@ export class UserController {
 
   @ApiOperation({ summary: 'Get user by id' })
   @ApiOkResponse({ description: 'User info', type: UserInfoDto })
-  @ApiNotFoundResponse({ description: 'User not found' }) // TODO: set payload type
+  @ApiNotFoundResponse({ description: 'User not found' })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOneById(+id)
