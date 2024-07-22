@@ -5,6 +5,9 @@ export class CreateLessonDto {
   @MinLength(3)
   title: string
 
+  @MinLength(1)
+  order: number
+
   @MaxLength(3000)
   @IsOptional()
   description?: string

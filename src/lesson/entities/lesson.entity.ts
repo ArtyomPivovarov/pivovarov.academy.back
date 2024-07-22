@@ -14,6 +14,9 @@ export class Lesson {
   @Column()
   title: string
 
+  @Column({ type: 'int' })
+  order: number
+
   @Column({ name: 'video_url' })
   videoUrl?: string
 
