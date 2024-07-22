@@ -9,17 +9,35 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Lesson } from '@/lesson/entities/lesson.entity'
 import { Repository } from 'typeorm'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
-import { LessonsListDto } from '@/lesson/entities/lessons-list.dto'
+import { LessonsListDto } from '@/lesson/dto/lessons-list.dto'
+import { LearningModule } from '@/learning-module/entities/learning-module.entity'
 
 @Injectable()
 export class LessonService {
   constructor(
     @InjectRepository(Lesson)
-    private lessonRepository: Repository<Lesson>
+    private lessonRepository: Repository<Lesson>,
+    @InjectRepository(LearningModule)
+    private learningModuleRepository: Repository<LearningModule>
   ) {}
 
-  create(createLessonDto: CreateLessonDto): Promise<Lesson> {
-    return this.lessonRepository.save(createLessonDto)
+  async create({
+    moduleId,
+    ...restCreateLessonDto
+  }: CreateLessonDto): Promise<Lesson> {
+    const learningModule = await this.learningModuleRepository.findOneBy({
+      id: moduleId
+    })
+    if (!learningModule) {
+      throw new BadRequestException('Learning module not found')
+    }
+
+    return this.lessonRepository.save({
+      ...restCreateLessonDto,
+      learningModule: {
+        id: moduleId
+      }
+    })
   }
 
   async findAll({ page, limit }: PaginationQueryDto): Promise<LessonsListDto> {
@@ -47,12 +65,26 @@ export class LessonService {
     return this.lessonRepository.findOneByOrFail({ id })
   }
 
-  async update(id: number, updateLessonDto: UpdateLessonDto): Promise<Lesson> {
+  async update(
+    id: number,
+    { moduleId, ...restUpdateLessonDto }: UpdateLessonDto
+  ): Promise<Lesson> {
     try {
-      const updateResult = await this.lessonRepository.update(
-        id,
-        updateLessonDto
-      )
+      if (moduleId) {
+        const learningModule = await this.learningModuleRepository.findOneBy({
+          id: moduleId
+        })
+        if (!learningModule) {
+          throw new BadRequestException('Learning module not found')
+        }
+      }
+
+      const updateResult = await this.lessonRepository.update(id, {
+        ...restUpdateLessonDto,
+        learningModule: {
+          id: moduleId
+        }
+      })
       if (!updateResult.affected) {
         throw new NotFoundException('Lesson not found')
       }

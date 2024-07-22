@@ -2,14 +2,21 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
+import { LearningModule } from '@/learning-module/entities/learning-module.entity'
 
 @Entity()
 export class Lesson {
   @PrimaryGeneratedColumn({ name: 'lesson_id' })
   id: number
+
+  @ManyToOne(() => LearningModule, learningModule => learningModule.lessons)
+  @JoinColumn({ name: 'module_id' })
+  learningModule: LearningModule
 
   @Column()
   title: string

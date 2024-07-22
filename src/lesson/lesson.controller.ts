@@ -21,7 +21,7 @@ import {
 } from '@nestjs/swagger'
 import { Lesson } from '@/lesson/entities/lesson.entity'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
-import { LessonsListDto } from '@/lesson/entities/lessons-list.dto'
+import { LessonsListDto } from '@/lesson/dto/lessons-list.dto'
 import { UserInfoDto } from '@/user/dto/user-info.dto'
 
 @ApiTags('lesson')
@@ -55,7 +55,7 @@ export class LessonController {
 
   @ApiOperation({ summary: 'Update lesson by id' })
   @ApiOkResponse({ description: 'Lesson updated', type: UserInfoDto })
-  @ApiNotFoundResponse({ description: 'Lesson not found' }) // TODO: set payload type
+  @ApiNotFoundResponse({ description: 'Lesson not found' })
   @ApiBadRequestResponse({ description: 'Bad request' }) // TODO: set payload type
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateLessonDto: UpdateLessonDto) {

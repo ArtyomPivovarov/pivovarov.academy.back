@@ -1,14 +1,18 @@
-import { IsOptional, MaxLength, MinLength } from 'class-validator'
+import { IsNumber, IsOptional, MaxLength, MinLength } from 'class-validator'
 
 export class CreateLessonDto {
+  @IsNumber()
+  moduleId: number
+
   @MaxLength(255)
   @MinLength(3)
   title: string
 
-  @MinLength(1)
+  @IsNumber()
   order: number
 
   @MaxLength(3000)
+  @MinLength(3)
   @IsOptional()
   description?: string
 
