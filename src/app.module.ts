@@ -5,7 +5,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserModule } from './user/user.module'
 import { LessonModule } from './lesson/lesson.module'
-import { LearningModuleModule } from './learning-module/learning-module.module';
+import { LearningModuleModule } from './learning-module/learning-module.module'
+import { SubscriptionModule } from './subscription/subscription.module'
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { LearningModuleModule } from './learning-module/learning-module.module';
     }),
     UserModule,
     LessonModule,
-    LearningModuleModule
+    LearningModuleModule,
+    SubscriptionModule
   ],
   controllers: [AppController],
   providers: [AppService]

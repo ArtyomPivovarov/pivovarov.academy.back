@@ -61,8 +61,13 @@ export class LessonService {
     }
   }
 
-  findOneById(id: number): Promise<Lesson> {
-    return this.lessonRepository.findOneByOrFail({ id })
+  async findOneById(id: number): Promise<Lesson> {
+    const lesson = await this.lessonRepository.findOneBy({ id })
+    if (!lesson) {
+      throw new NotFoundException('Lesson not found')
+    }
+
+    return lesson
   }
 
   async update(

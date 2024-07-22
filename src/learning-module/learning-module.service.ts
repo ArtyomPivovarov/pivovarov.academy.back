@@ -25,13 +25,18 @@ export class LearningModuleService {
     })
   }
 
-  findOneById(id: number): Promise<LearningModule> {
-    return this.learningModuleRepository.findOneOrFail({
+  async findOneById(id: number): Promise<LearningModule> {
+    const learningModule = await this.learningModuleRepository.findOneOrFail({
       where: { id },
       relations: {
         lessons: true
       }
     })
+    if (!learningModule) {
+      throw new NotFoundException('Learning module not found')
+    }
+
+    return learningModule
   }
 
   update(
