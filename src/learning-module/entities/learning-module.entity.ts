@@ -30,8 +30,11 @@ export class LearningModule {
   @Column({ length: 3000, default: '' })
   description?: string
 
-  @Column({ default: false })
+  @Column({ nullable: true })
   published: boolean
+
+  @Column({ nullable: true })
+  private: boolean
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date

@@ -24,10 +24,10 @@ export class Lesson {
   @Column({ type: 'int' })
   order: number
 
-  @Column({ name: 'video_url' })
+  @Column({ name: 'video_url', nullable: true })
   videoUrl?: string
 
-  @Column({ length: 3000 })
+  @Column({ length: 3000, nullable: true })
   description?: string
 
   @CreateDateColumn({ name: 'created_at' })

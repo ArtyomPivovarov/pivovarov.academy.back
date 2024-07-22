@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsOptional, MaxLength, MinLength } from 'class-validator'
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+  MaxLength,
+  MinLength
+} from 'class-validator'
 import { LearningModuleType } from '@/learning-module/learning-module.enum'
 
 export class CreateLearningModuleDto {
@@ -15,5 +21,10 @@ export class CreateLearningModuleDto {
   description?: string
 
   @IsOptional()
+  @IsBoolean()
   published?: boolean
+
+  @IsOptional()
+  @IsBoolean()
+  private?: boolean
 }
