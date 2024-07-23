@@ -9,6 +9,7 @@ import {
 } from 'typeorm'
 import { Role } from '@/role/role.enum'
 import { Subscription } from '@/subscription/entities/subscription.entity'
+import { LessonProgress } from '@/lesson-progress/entities/lesson-progress.entity'
 
 @Entity()
 @Unique('UQ_EMAIL', ['email'])
@@ -27,6 +28,9 @@ export class User {
 
   @OneToMany(() => Subscription, subscription => subscription.user)
   subscriptions: Subscription[]
+
+  @OneToMany(() => LessonProgress, lesson => lesson.user)
+  lessonProgresses: LessonProgress[]
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date

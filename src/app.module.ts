@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module'
 import { LessonModule } from './lesson/lesson.module'
 import { LearningModuleModule } from './learning-module/learning-module.module'
 import { SubscriptionModule } from './subscription/subscription.module'
+import { LessonProgressModule } from './lesson-progress/lesson-progress.module'
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { SubscriptionModule } from './subscription/subscription.module'
     UserModule,
     LessonModule,
     LearningModuleModule,
-    SubscriptionModule
+    SubscriptionModule,
+    LessonProgressModule
   ],
   controllers: [AppController],
   providers: [AppService]

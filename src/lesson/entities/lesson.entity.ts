@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
 import { LearningModule } from '@/learning-module/entities/learning-module.entity'
+import { LessonProgress } from '@/lesson-progress/entities/lesson-progress.entity'
 
 @Entity()
 export class Lesson {
@@ -17,6 +19,9 @@ export class Lesson {
   @ManyToOne(() => LearningModule, learningModule => learningModule.lessons)
   @JoinColumn({ name: 'module_id' })
   learningModule: LearningModule
+
+  @OneToMany(() => LessonProgress, lessonProgress => lessonProgress.lesson)
+  lessonProgresses: LessonProgress[]
 
   @Column()
   title: string
@@ -29,6 +34,9 @@ export class Lesson {
 
   @Column({ length: 3000, nullable: true })
   description?: string
+
+  @Column({ type: 'boolean', nullable: true })
+  published?: boolean
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date
