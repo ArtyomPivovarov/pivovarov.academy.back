@@ -21,6 +21,7 @@ import {
 } from '@nestjs/swagger'
 import { LearningModule } from '@/learning-module/entities/learning-module.entity'
 import { FindAllQueryLearningModuleDto } from '@/learning-module/dto/find-all-query-learning-module.dto'
+import { Public } from '@/auth/public.decorator'
 
 @ApiTags('learning-module')
 @Controller('learning-module')
@@ -43,6 +44,7 @@ export class LearningModuleController {
     description: 'Learning modules list',
     type: [LearningModule]
   })
+  @Public()
   @Get()
   findAll(@Query() query: FindAllQueryLearningModuleDto) {
     return this.learningModuleService.findAll(query)

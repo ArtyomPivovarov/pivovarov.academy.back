@@ -8,6 +8,10 @@ import { LessonModule } from './lesson/lesson.module'
 import { LearningModuleModule } from './learning-module/learning-module.module'
 import { SubscriptionModule } from './subscription/subscription.module'
 import { LessonProgressModule } from './lesson-progress/lesson-progress.module'
+import { APP_GUARD } from '@nestjs/core'
+import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
+import { RolesGuard } from '@/role/roles.guard'
+import { AuthModule } from '@/auth/auth.module'
 
 @Module({
   imports: [
@@ -26,6 +30,7 @@ import { LessonProgressModule } from './lesson-progress/lesson-progress.module'
       }),
       inject: [ConfigService]
     }),
+    AuthModule,
     UserModule,
     LessonModule,
     LearningModuleModule,
@@ -33,6 +38,18 @@ import { LessonProgressModule } from './lesson-progress/lesson-progress.module'
     LessonProgressModule
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useExisting: JwtAuthGuard
+    },
+    JwtAuthGuard,
+    {
+      provide: APP_GUARD,
+      useExisting: RolesGuard
+    },
+    RolesGuard
+  ]
 })
 export class AppModule {}

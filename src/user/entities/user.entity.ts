@@ -26,15 +26,18 @@ export class User {
   @Column({ type: 'enum', enum: Role, default: Role.User })
   role: Role
 
-  @OneToMany(() => Subscription, subscription => subscription.user)
-  subscriptions: Subscription[]
-
-  @OneToMany(() => LessonProgress, lesson => lesson.user)
-  lessonProgresses: LessonProgress[]
+  @Column({ name: 'refresh_token', nullable: true })
+  refreshToken: string
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date
+
+  @OneToMany(() => Subscription, subscription => subscription.user)
+  subscriptions: Subscription[]
+
+  @OneToMany(() => LessonProgress, lesson => lesson.user)
+  lessonProgresses: LessonProgress[]
 }
