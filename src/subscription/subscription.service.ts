@@ -6,11 +6,12 @@ import {
 import { CreateSubscriptionDto } from './dto/create-subscription.dto'
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto'
 import { Subscription } from '@/subscription/entities/subscription.entity'
-import { Repository } from 'typeorm'
+import { MoreThanOrEqual, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from '@/user/entities/user.entity'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
 import { SubscriptionListDto } from '@/subscription/dto/subscription-list.dto'
+import { BuySubscriptionDto } from '@/subscription/dto/buy-subscription.dto'
 
 @Injectable()
 export class SubscriptionService {
@@ -104,5 +105,36 @@ export class SubscriptionService {
         throw new BadRequestException()
       }
     }
+  }
+
+  async buy(
+    userId: number,
+    { duration }: BuySubscriptionDto
+  ): Promise<Subscription> {
+    try {
+      return this.subscriptionRepository.save({
+        user: {
+          id: userId
+        },
+        startDate: new Date(),
+        endDate: new Date(Date.now() + duration)
+      })
+    } catch (e) {
+      throw new BadRequestException()
+    }
+  }
+
+  async getActive(userId: number): Promise<Subscription> {
+    const subscription = await this.subscriptionRepository.findOneBy({
+      user: {
+        id: userId
+      },
+      endDate: MoreThanOrEqual(new Date())
+    })
+    if (!subscription) {
+      throw new NotFoundException('Subscription not found')
+    }
+
+    return subscription
   }
 }

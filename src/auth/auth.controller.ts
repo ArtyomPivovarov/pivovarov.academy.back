@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Request, Body } from '@nestjs/common'
+import { Controller, Post, UseGuards, Request, Body, Get } from '@nestjs/common'
 import { LocalAuthGuard } from '@/auth/local-auth.guard'
 import { AuthService } from '@/auth/auth.service'
 import {
@@ -7,9 +7,12 @@ import {
   ApiTags,
   ApiUnauthorizedResponse
 } from '@nestjs/swagger'
-import { SuccessAuthResponse } from '@/auth/auth.types'
+import { AuthRequest, SuccessAuthResponse } from '@/auth/auth.types'
 import { Public } from '@/auth/public.decorator'
 import { RegisterUserDto } from '@/user/dto/register-user.dto'
+import { UserInfoDto } from '@/user/dto/user-info.dto'
+import { FastifyRequest } from 'fastify'
+import { User } from '@/user/entities/user.entity'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -43,7 +46,9 @@ export class AuthController {
   })
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req): Promise<SuccessAuthResponse> {
+  async login(
+    @Request() req: FastifyRequest & { user: User }
+  ): Promise<SuccessAuthResponse> {
     return this.authService.login(req.user)
   }
 
@@ -52,5 +57,12 @@ export class AuthController {
   @Post('register')
   async register(@Body() registerUserDto: RegisterUserDto) {
     return this.authService.register(registerUserDto)
+  }
+
+  @ApiOperation({ summary: 'Get user profile' })
+  @ApiOkResponse({ description: 'User info', type: UserInfoDto })
+  @Get('me')
+  getMe(@Request() req: AuthRequest) {
+    return req.user
   }
 }

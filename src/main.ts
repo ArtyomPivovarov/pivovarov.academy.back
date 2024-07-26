@@ -46,6 +46,7 @@ async function bootstrap() {
     })
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle(name)
     .setVersion(version)
     .build()

@@ -5,7 +5,8 @@ import {
   Body,
   Patch,
   Param,
-  Query
+  Query,
+  Request
 } from '@nestjs/common'
 import { SubscriptionService } from './subscription.service'
 import { CreateSubscriptionDto } from './dto/create-subscription.dto'
@@ -21,6 +22,10 @@ import {
 import { Subscription } from '@/subscription/entities/subscription.entity'
 import { SubscriptionListDto } from '@/subscription/dto/subscription-list.dto'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
+import { AuthRequest } from '@/auth/auth.types'
+import { BuySubscriptionDto } from '@/subscription/dto/buy-subscription.dto'
+import { Roles } from '@/role/roles.decorator'
+import { Role } from '@/role/role.enum'
 
 @ApiTags('subscription')
 @Controller('subscription')
@@ -67,5 +72,29 @@ export class SubscriptionController {
     @Body() updateSubscriptionDto: UpdateSubscriptionDto
   ) {
     return this.subscriptionService.update(+id, updateSubscriptionDto)
+  }
+
+  @ApiOperation({ summary: 'Buy subscription by id' })
+  @ApiOkResponse({ description: 'Subscription bought', type: Subscription })
+  @ApiBadRequestResponse({ description: 'Bad request' }) // TODO: set payload type
+  @Roles(Role.User)
+  @Post('buy')
+  buy(
+    @Request() req: AuthRequest,
+    @Body() buySubscriptionDto: BuySubscriptionDto
+  ) {
+    return this.subscriptionService.buy(req.user.id, buySubscriptionDto)
+  }
+
+  @ApiOperation({ summary: 'Get your active subscription' })
+  @ApiOkResponse({
+    description: 'Active subscription',
+    type: Subscription
+  })
+  @ApiNotFoundResponse({ description: 'Subscription not found' })
+  @Roles(Role.User)
+  @Get('active')
+  getActive(@Request() req: AuthRequest) {
+    return this.subscriptionService.getActive(req.user.id)
   }
 }
