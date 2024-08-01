@@ -65,13 +65,7 @@ export class AuthService {
   }
 
   async refresh(refreshToken: string): Promise<SuccessAuthResponse> {
-    console.log({
-      refreshToken
-    })
     const user = await this.validateRefreshToken(refreshToken)
-    console.log({
-      user
-    })
     return {
       user: {
         id: user.id,

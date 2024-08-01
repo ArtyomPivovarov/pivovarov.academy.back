@@ -6,7 +6,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
-import { LearningModuleType } from '@/learning-module/learning-module.enum'
+import {
+  LearningModuleLevel,
+  LearningModuleTechnology,
+  LearningModuleType
+} from '@/learning-module/learning-module.enum'
 import { Lesson } from '@/lesson/entities/lesson.entity'
 
 @Entity()
@@ -23,6 +27,23 @@ export class LearningModule {
     default: LearningModuleType.Intensive
   })
   type: LearningModuleType
+
+  @Column({
+    type: 'enum',
+    enum: LearningModuleLevel,
+    default: LearningModuleLevel.Junior,
+    nullable: true
+  })
+  level: LearningModuleLevel
+
+  @Column({
+    type: 'enum',
+    enum: LearningModuleTechnology,
+    array: true,
+    default: [],
+    nullable: true
+  })
+  technologies: LearningModuleLevel
 
   @Column()
   title: string
