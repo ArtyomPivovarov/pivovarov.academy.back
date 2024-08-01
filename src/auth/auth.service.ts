@@ -28,7 +28,7 @@ export class AuthService {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       },
-      accessToken: this.generateAccessToken(user),
+      accessToken: await this.generateAccessToken(user),
       refreshToken: await this.generateRefreshToken(user)
     }
   }
@@ -59,7 +59,28 @@ export class AuthService {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       },
-      accessToken: this.generateAccessToken(user),
+      accessToken: await this.generateAccessToken(user),
+      refreshToken: await this.generateRefreshToken(user)
+    }
+  }
+
+  async refresh(refreshToken: string): Promise<SuccessAuthResponse> {
+    console.log({
+      refreshToken
+    })
+    const user = await this.validateRefreshToken(refreshToken)
+    console.log({
+      user
+    })
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      },
+      accessToken: await this.generateAccessToken(user),
       refreshToken: await this.generateRefreshToken(user)
     }
   }
@@ -79,17 +100,22 @@ export class AuthService {
   }
 
   async validateRefreshToken(token: string): Promise<User> {
-    const payload = this.jwtService.verify(token)
-    const user = await this.userRepository.findOneBy({ id: payload.id })
-    if (!user || user.refreshToken !== token) {
+    try {
+      const payload = this.jwtService.verify(token)
+      const user = await this.userRepository.findOneBy({ id: payload.id })
+      if (!user || user.refreshToken !== token) {
+        throw new UnauthorizedException('Invalid refresh token')
+      }
+
+      return user
+    } catch (e) {
+      console.log(e)
       throw new UnauthorizedException('Invalid refresh token')
     }
-
-    return user
   }
 
-  generateAccessToken({ id, email, role }: UserTokenPayload) {
-    return this.jwtService.sign({
+  async generateAccessToken({ id, email, role }: UserTokenPayload) {
+    return this.jwtService.signAsync({
       id,
       email,
       role
@@ -101,7 +127,13 @@ export class AuthService {
     email,
     role
   }: UserTokenPayload): Promise<string> {
-    const refreshToken = this.jwtService.sign({ id, email, role })
+    const refreshToken = await this.jwtService.signAsync(
+      { id, email, role },
+      {
+        secret: process.env.JWT_REFRESH_SECRET,
+        expiresIn: '7d'
+      }
+    )
     await this.userRepository.update(id, { refreshToken })
     return refreshToken
   }

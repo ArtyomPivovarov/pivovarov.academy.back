@@ -59,6 +59,16 @@ export class AuthController {
     return this.authService.register(registerUserDto)
   }
 
+  @ApiOperation({ summary: 'Refresh tokens' })
+  @ApiOkResponse({ description: 'User info', type: UserInfoDto })
+  @Public()
+  @Post('refresh')
+  refresh(@Request() req: FastifyRequest) {
+    return this.authService.refresh(
+      String(req.headers.authorization).split(' ')[1]
+    )
+  }
+
   @ApiOperation({ summary: 'Get user profile' })
   @ApiOkResponse({ description: 'User info', type: UserInfoDto })
   @Get('me')
