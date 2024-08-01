@@ -43,7 +43,7 @@ export class LearningModule {
     default: [],
     nullable: true
   })
-  technologies: LearningModuleLevel
+  technologies: LearningModuleTechnology[]
 
   @Column()
   title: string

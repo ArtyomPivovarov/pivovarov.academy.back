@@ -11,15 +11,18 @@ export enum LearningModuleLevel {
 }
 
 export enum LearningModuleTechnology {
+  Html = 'html',
+  Css = 'css',
   JavaScript = 'javascript',
   TypeScript = 'typescript',
-  Angular = 'angular',
-  React = 'react',
-  Vue = 'vue',
+  Sass = 'sass',
+  AngularJS = 'angular-js',
+  ReactJs = 'react-js',
+  VueJs = 'vue-js',
   NextJS = 'next-js',
   NuxtJS = 'nuxt-js',
-  Node = 'node',
-  NestJS = 'nestjs',
+  NodeJS = 'node-js',
+  NestJS = 'nest-js',
   Express = 'express',
   MongoDB = 'mongodb',
   MySQL = 'mysql',

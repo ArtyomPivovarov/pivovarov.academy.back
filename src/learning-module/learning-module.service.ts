@@ -21,7 +21,10 @@ export class LearningModuleService {
 
   findAll(query: FindAllQueryLearningModuleDto): Promise<LearningModule[]> {
     return this.learningModuleRepository.find({
-      where: query
+      where: {
+        ...query,
+        published: true
+      }
     })
   }
 

@@ -1,19 +1,30 @@
 import {
+  IsArray,
   IsBoolean,
-  IsNotEmpty,
+  IsEnum,
   IsOptional,
   MaxLength,
   MinLength
 } from 'class-validator'
-import { LearningModuleType } from '@/learning-module/learning-module.enum'
+import {
+  LearningModuleLevel,
+  LearningModuleTechnology,
+  LearningModuleType
+} from '@/learning-module/learning-module.enum'
 
 export class CreateLearningModuleDto {
   @MaxLength(255)
   @MinLength(3)
   title: string
 
-  @IsNotEmpty()
+  @IsEnum(LearningModuleType)
   type: LearningModuleType
+
+  @IsEnum(LearningModuleLevel)
+  level: LearningModuleLevel
+
+  @IsArray()
+  technologies: LearningModuleTechnology[]
 
   @MaxLength(3000)
   @MinLength(3)
