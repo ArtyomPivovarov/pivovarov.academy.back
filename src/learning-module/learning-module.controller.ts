@@ -53,6 +53,7 @@ export class LearningModuleController {
   @ApiOperation({ summary: 'Get learning module by id' })
   @ApiOkResponse({ description: 'Learning module', type: LearningModule })
   @ApiNotFoundResponse({ description: 'Learning module not found' })
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.learningModuleService.findOneById(+id)

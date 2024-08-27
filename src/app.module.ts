@@ -12,6 +12,7 @@ import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
 import { RolesGuard } from '@/role/roles.guard'
 import { AuthModule } from '@/auth/auth.module'
+import { VideoModule } from '@/video/video.module'
 
 @Module({
   imports: [
@@ -20,11 +21,11 @@ import { AuthModule } from '@/auth/auth.module'
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get('PG_HOST'),
-        port: parseInt(configService.get('PG_PORT')),
-        username: configService.get('PG_USER'),
-        password: configService.get('PG_PASSWORD'),
-        database: configService.get('PG_DB'),
+        host: configService.get('PG_HOST') || 'localhost',
+        port: parseInt(configService.get('PG_PORT')) || 5432,
+        username: configService.get('PG_USER') || 'academy',
+        password: configService.get('PG_PASSWORD') || '123456',
+        database: configService.get('PG_DB') || 'academy-db',
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true
       }),
@@ -35,7 +36,8 @@ import { AuthModule } from '@/auth/auth.module'
     LessonModule,
     LearningModuleModule,
     SubscriptionModule,
-    LessonProgressModule
+    LessonProgressModule,
+    VideoModule
   ],
   controllers: [AppController],
   providers: [

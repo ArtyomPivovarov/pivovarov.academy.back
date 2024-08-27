@@ -23,6 +23,7 @@ import { Lesson } from '@/lesson/entities/lesson.entity'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
 import { LessonsListDto } from '@/lesson/dto/lessons-list.dto'
 import { UserInfoDto } from '@/user/dto/user-info.dto'
+import { Public } from '@/auth/public.decorator'
 
 @ApiTags('lesson')
 @Controller('lesson')
@@ -48,6 +49,7 @@ export class LessonController {
   @ApiOperation({ summary: 'Get lesson by id' })
   @ApiOkResponse({ description: 'Lesson', type: Lesson })
   @ApiNotFoundResponse({ description: 'Lesson not found' })
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.lessonService.findOneById(+id)

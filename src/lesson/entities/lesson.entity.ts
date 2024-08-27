@@ -5,11 +5,13 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
 import { LearningModule } from '@/learning-module/entities/learning-module.entity'
 import { LessonProgress } from '@/lesson-progress/entities/lesson-progress.entity'
+import { Video } from '@/video/entities/video.entity'
 
 @Entity()
 export class Lesson {
@@ -29,8 +31,11 @@ export class Lesson {
   @Column({ type: 'int' })
   order: number
 
-  @Column({ name: 'video_url', nullable: true })
-  videoUrl?: string
+  @OneToOne(() => Video, video => video.lesson, {
+    nullable: true
+  })
+  @JoinColumn({ name: 'video_id' })
+  video: Video
 
   @Column({ length: 3000, nullable: true })
   description?: string
