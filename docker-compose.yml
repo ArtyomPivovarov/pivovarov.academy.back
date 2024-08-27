@@ -1,0 +1,33 @@
+services:
+  app:
+    build: .
+    ports:
+      - '4200:4200'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - JWT_SECRET=s@wefjh@`114ASF14
+      - PORT=4200
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=academy
+      - PG_PASSWORD=123456
+      - PG_DB=academy-db
+      - ACCESS_TOKEN_EXPIRES_IN=1h
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=academy-db
+      - POSTGRES_USER=academy
+      - POSTGRES_PASSWORD=123456
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

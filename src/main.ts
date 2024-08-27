@@ -10,6 +10,8 @@ import { version, name } from 'package.json'
 import { IS_PUBLIC_KEY } from '@/auth/public.decorator'
 
 async function bootstrap() {
+  console.log('Starting NestJS application...')
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({ ignoreTrailingSlash: true }),
@@ -77,6 +79,12 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, document)
 
-  await app.listen(process.env.PORT || 4200)
+  try {
+    await app.listen(process.env.PORT || 4200, '0.0.0.0')
+    console.log(`Application is running on: ${await app.getUrl()}`)
+  } catch (err) {
+    console.error('Error starting server:', err)
+  }
 }
+
 bootstrap()
