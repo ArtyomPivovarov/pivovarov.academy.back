@@ -47,7 +47,22 @@ export class VideoService {
   }
 
   async findOneById(id: number): Promise<Video> {
-    const video = await this.videoRepository.findOneBy({ id })
+    const video = await this.videoRepository.findOne({
+      where: { id },
+      select: {
+        id: true,
+        title: true,
+        src: true,
+        previewSrc: true,
+        lesson: {
+          id: true,
+          title: true
+        }
+      },
+      relations: {
+        lesson: true
+      }
+    })
     if (!video) {
       throw new NotFoundException('Video not found')
     }

@@ -10,10 +10,12 @@ import { Lesson } from '@/lesson/entities/lesson.entity'
 
 @Entity()
 export class Video {
-  @PrimaryGeneratedColumn({ name: 'lesson_id' })
+  @PrimaryGeneratedColumn({ name: 'video_id' })
   id: number
 
-  @OneToOne(() => Lesson, lesson => lesson.video)
+  @OneToOne(() => Lesson, lesson => lesson.video, {
+    nullable: true
+  })
   lesson: Lesson
 
   @Column()

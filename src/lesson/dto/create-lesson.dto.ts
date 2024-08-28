@@ -16,7 +16,7 @@ export class CreateLessonDto {
   @IsOptional()
   description?: string
 
-  @MaxLength(255)
   @IsOptional()
-  videoUrl?: string
+  @IsNumber()
+  videoId: number
 }

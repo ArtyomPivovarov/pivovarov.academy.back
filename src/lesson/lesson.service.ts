@@ -11,6 +11,7 @@ import { Repository } from 'typeorm'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
 import { LessonsListDto } from '@/lesson/dto/lessons-list.dto'
 import { LearningModule } from '@/learning-module/entities/learning-module.entity'
+import { Video } from '@/video/entities/video.entity'
 
 @Injectable()
 export class LessonService {
@@ -18,11 +19,14 @@ export class LessonService {
     @InjectRepository(Lesson)
     private lessonRepository: Repository<Lesson>,
     @InjectRepository(LearningModule)
-    private learningModuleRepository: Repository<LearningModule>
+    private learningModuleRepository: Repository<LearningModule>,
+    @InjectRepository(Video)
+    private videoRepository: Repository<Video>
   ) {}
 
   async create({
     moduleId,
+    videoId,
     ...restCreateLessonDto
   }: CreateLessonDto): Promise<Lesson> {
     const learningModule = await this.learningModuleRepository.findOneBy({
@@ -32,10 +36,20 @@ export class LessonService {
       throw new BadRequestException('Learning module not found')
     }
 
+    const video = await this.videoRepository.findOneBy({
+      id: videoId
+    })
+    if (!video) {
+      throw new BadRequestException('Video not found')
+    }
+
     return this.lessonRepository.save({
       ...restCreateLessonDto,
       learningModule: {
         id: moduleId
+      },
+      video: {
+        id: videoId
       }
     })
   }
@@ -62,7 +76,31 @@ export class LessonService {
   }
 
   async findOneById(id: number): Promise<Lesson> {
-    const lesson = await this.lessonRepository.findOneBy({ id })
+    const lesson = await this.lessonRepository.findOne({
+      where: { id },
+      select: {
+        id: true,
+        title: true,
+        order: true,
+        description: true,
+        published: true,
+        createdAt: true,
+        updatedAt: true,
+        learningModule: {
+          id: true,
+          title: true
+        },
+        video: {
+          id: true,
+          src: true,
+          previewSrc: true
+        }
+      },
+      relations: {
+        learningModule: true,
+        video: true
+      }
+    })
     if (!lesson) {
       throw new NotFoundException('Lesson not found')
     }
@@ -72,9 +110,14 @@ export class LessonService {
 
   async update(
     id: number,
-    { moduleId, ...restUpdateLessonDto }: UpdateLessonDto
+    { moduleId, videoId, ...restUpdateLessonDto }: UpdateLessonDto
   ): Promise<Lesson> {
     try {
+      console.log({
+        id,
+        moduleId,
+        videoId
+      })
       if (moduleId) {
         const learningModule = await this.learningModuleRepository.findOneBy({
           id: moduleId
@@ -84,18 +127,37 @@ export class LessonService {
         }
       }
 
+      if (videoId) {
+        const video = await this.videoRepository.findOneBy({
+          id: videoId
+        })
+        console.log('video', video)
+        if (!video) {
+          throw new BadRequestException('Video not found')
+        }
+      }
+      console.log('beforeUpdate')
       const updateResult = await this.lessonRepository.update(id, {
         ...restUpdateLessonDto,
-        learningModule: {
-          id: moduleId
-        }
+        learningModule: moduleId
+          ? {
+              id: moduleId
+            }
+          : undefined,
+        video: videoId
+          ? {
+              id: videoId
+            }
+          : undefined
       })
+      console.log('updateResult', updateResult)
       if (!updateResult.affected) {
         throw new NotFoundException('Lesson not found')
       }
 
       return this.lessonRepository.findOneByOrFail({ id })
     } catch (error) {
+      console.log('error', error)
       if (error instanceof NotFoundException) {
         throw error
       } else {

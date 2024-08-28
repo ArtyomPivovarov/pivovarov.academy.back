@@ -31,8 +31,29 @@ export class LearningModuleService {
   async findOneById(id: number): Promise<LearningModule> {
     const learningModule = await this.learningModuleRepository.findOneOrFail({
       where: { id },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        published: true,
+        createdAt: true,
+        updatedAt: true,
+        lessons: {
+          id: true,
+          title: true,
+          order: true,
+          description: true,
+          video: {
+            id: true,
+            src: true,
+            previewSrc: true
+          }
+        }
+      },
       relations: {
-        lessons: true
+        lessons: {
+          video: true
+        }
       }
     })
     if (!learningModule) {
