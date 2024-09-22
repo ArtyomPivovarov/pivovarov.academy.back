@@ -13,6 +13,7 @@ import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
 import { RolesGuard } from '@/role/roles.guard'
 import { AuthModule } from '@/auth/auth.module'
 import { VideoModule } from '@/video/video.module'
+import * as process from 'node:process'
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { VideoModule } from '@/video/video.module'
         password: configService.get('PG_PASSWORD') || '123456',
         database: configService.get('PG_DB') || 'academy-db',
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true
+        synchronize: process.env.NODE_ENV !== 'production',
+        logging: true,
       }),
       inject: [ConfigService]
     }),

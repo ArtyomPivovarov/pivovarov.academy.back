@@ -1,11 +1,17 @@
 import { readdirSync } from 'fs'
 import { join } from 'path'
 
-async function runAllSeeds() {
+export async function runAllSeeds() {
+  console.log('Running seeds...')
+
   const seedsDir = join(__dirname)
-  const seedFiles = readdirSync(seedsDir).filter(file =>
-    file.endsWith('.seed.ts')
+  console.log('Seeds directory:', seedsDir)
+
+  const seedFiles = readdirSync(seedsDir).filter(
+    file => file.endsWith('.seed.ts') || file.endsWith('.seed.js')
   )
+
+  console.log('Found seeds:', seedFiles)
 
   for (const file of seedFiles) {
     const { runSeed } = await import(join(seedsDir, file))
@@ -15,8 +21,3 @@ async function runAllSeeds() {
 
   console.log('All seeds executed successfully.')
 }
-
-runAllSeeds().catch(err => {
-  console.error('Error running seeds:', err)
-  process.exit(1)
-})

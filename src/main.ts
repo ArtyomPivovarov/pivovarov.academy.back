@@ -8,6 +8,7 @@ import { ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { version, name } from 'package.json'
 import { IS_PUBLIC_KEY } from '@/auth/public.decorator'
+import { runAllSeeds } from '@/seeds/run-seeds'
 
 async function bootstrap() {
   console.log('Starting NestJS application...')
@@ -84,6 +85,12 @@ async function bootstrap() {
     console.log(`Application is running on: ${await app.getUrl()}`)
   } catch (err) {
     console.error('Error starting server:', err)
+  }
+
+  try {
+    await runAllSeeds()
+  } catch (err) {
+    console.error('Error running seeds:', err)
   }
 }
 
