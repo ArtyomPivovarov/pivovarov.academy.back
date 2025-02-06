@@ -87,11 +87,11 @@ async function bootstrap() {
     console.error('Error starting server:', err)
   }
 
-  try {
-    await runAllSeeds()
-  } catch (err) {
-    console.error('Error running seeds:', err)
-  }
+  // try {
+  //   await runAllSeeds()
+  // } catch (err) {
+  //   console.error('Error running seeds:', err)
+  // }
 }
 
 bootstrap()

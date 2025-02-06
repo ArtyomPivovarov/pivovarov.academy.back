@@ -1,7 +1,7 @@
 import {
   IsArray,
   IsBoolean,
-  IsEnum,
+  IsEnum, IsNumber,
   IsOptional,
   MaxLength,
   MinLength
@@ -25,6 +25,9 @@ export class CreateLearningModuleDto {
 
   @IsArray()
   technologies: LearningModuleTechnology[]
+
+  @IsNumber()
+  order: number
 
   @MaxLength(3000)
   @MinLength(3)

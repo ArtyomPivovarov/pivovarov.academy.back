@@ -24,6 +24,9 @@ export class LearningModuleService {
       where: {
         ...query,
         published: true
+      },
+      order: {
+        order: 'ASC'
       }
     })
   }
@@ -47,7 +50,12 @@ export class LearningModuleService {
             id: true,
             src: true,
             previewSrc: true
-          }
+          },
+        },
+      },
+      order: {
+        lessons: {
+          order: 'ASC'
         }
       },
       relations: {

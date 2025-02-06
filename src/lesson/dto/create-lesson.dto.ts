@@ -18,5 +18,5 @@ export class CreateLessonDto {
 
   @IsOptional()
   @IsNumber()
-  videoId: number
+  videoId?: number
 }

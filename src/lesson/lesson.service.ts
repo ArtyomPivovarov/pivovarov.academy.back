@@ -36,11 +36,13 @@ export class LessonService {
       throw new BadRequestException('Learning module not found')
     }
 
-    const video = await this.videoRepository.findOneBy({
-      id: videoId
-    })
-    if (!video) {
-      throw new BadRequestException('Video not found')
+    if (videoId) {
+      const video = await this.videoRepository.findOneBy({
+        id: videoId
+      })
+      if (!video) {
+        throw new BadRequestException('Video not found')
+      }
     }
 
     return this.lessonRepository.save({

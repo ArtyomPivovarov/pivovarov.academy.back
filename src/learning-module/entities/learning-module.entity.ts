@@ -45,6 +45,9 @@ export class LearningModule {
   })
   technologies: LearningModuleTechnology[]
 
+  @Column({ type: 'int', default: 0 })
+  order: number
+
   @Column()
   title: string
 
