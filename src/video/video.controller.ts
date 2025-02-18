@@ -1,12 +1,13 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  Query
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Request
 } from '@nestjs/common'
 import { VideoService } from './video.service'
 import { CreateVideoDto } from './dto/create-video.dto'
@@ -23,7 +24,9 @@ import { Video } from '@/video/entities/video.entity'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
 import { VideosListDto } from '@/video/dto/videos-list.dto'
 import { UserInfoDto } from '@/user/dto/user-info.dto'
-import { Public } from '@/auth/public.decorator'
+import { Roles } from '@/role/roles.decorator'
+import { Role } from '@/role/role.enum'
+import { AuthRequest } from '@/auth/auth.types'
 
 @ApiTags('video')
 @Controller('video')
@@ -49,10 +52,10 @@ export class VideoController {
   @ApiOperation({ summary: 'Get video by id' })
   @ApiOkResponse({ description: 'Video', type: Video })
   @ApiNotFoundResponse({ description: 'Video not found' })
-  @Public()
+  @Roles(Role.Admin, Role.User)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.videoService.findOneById(+id)
+  findOne(@Request() req: AuthRequest, @Param('id') id: string) {
+    return this.videoService.findOneById(req.user.id, +id)
   }
 
   @ApiOperation({ summary: 'Update video by id' })

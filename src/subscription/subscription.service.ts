@@ -109,15 +109,34 @@ export class SubscriptionService {
 
   async buy(
     userId: number,
-    { duration }: BuySubscriptionDto
+    { duration, level }: BuySubscriptionDto
   ): Promise<Subscription> {
     try {
+      // TODO: payment processing
+
+      const activeSubscription = await this.subscriptionRepository.findOneBy({
+        user: {
+          id: userId
+        },
+        endDate: MoreThanOrEqual(new Date())
+      })
+      if (activeSubscription && activeSubscription.level === level) {
+        return this.subscriptionRepository.save({
+          user: {
+            id: userId
+          },
+          startDate: activeSubscription.startDate,
+          endDate: new Date(activeSubscription.endDate.getTime() + duration)
+        })
+      }
+
       return this.subscriptionRepository.save({
         user: {
           id: userId
         },
+        level,
         startDate: new Date(),
-        endDate: new Date(Date.now() + duration)
+        endDate: new Date(new Date().getTime() + duration)
       })
     } catch (e) {
       throw new BadRequestException()

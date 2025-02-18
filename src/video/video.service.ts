@@ -7,18 +7,19 @@ import { CreateVideoDto } from './dto/create-video.dto'
 import { UpdateVideoDto } from './dto/update-video.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Video } from '@/video/entities/video.entity'
-import { Repository } from 'typeorm'
+import { MoreThanOrEqual, Repository } from 'typeorm'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
 import { VideosListDto } from '@/video/dto/videos-list.dto'
-import { LearningModule } from '@/learning-module/entities/learning-module.entity'
+import { Subscription } from '@/subscription/entities/subscription.entity'
+import { checkSubscriptionLevel } from '@/subscription/subscription.utils'
 
 @Injectable()
 export class VideoService {
   constructor(
     @InjectRepository(Video)
     private videoRepository: Repository<Video>,
-    @InjectRepository(LearningModule)
-    private learningModuleRepository: Repository<LearningModule>
+    @InjectRepository(Subscription)
+    private subscriptionRepository: Repository<Subscription>
   ) {}
 
   async create(createVideoDto: CreateVideoDto): Promise<Video> {
@@ -46,7 +47,7 @@ export class VideoService {
     }
   }
 
-  async findOneById(id: number): Promise<Video> {
+  async findOneById(userId: number, id: number): Promise<Video> {
     const video = await this.videoRepository.findOne({
       where: { id },
       select: {
@@ -56,15 +57,40 @@ export class VideoService {
         previewSrc: true,
         lesson: {
           id: true,
-          title: true
+          title: true,
+          learningModule: {
+            id: true,
+            subscriptionLevel: true
+          }
         }
       },
       relations: {
-        lesson: true
+        lesson: {
+          learningModule: true
+        }
       }
     })
     if (!video) {
       throw new NotFoundException('Video not found')
+    }
+    if (video.lesson.learningModule.subscriptionLevel === null) {
+      return video
+    }
+
+    const subscription = await this.subscriptionRepository.findOneBy({
+      user: {
+        id: userId
+      },
+      endDate: MoreThanOrEqual(new Date())
+    })
+    if (
+      !subscription ||
+      !checkSubscriptionLevel(
+        subscription.level,
+        video.lesson.learningModule.subscriptionLevel
+      )
+    ) {
+      throw new BadRequestException('Subscription not found')
     }
 
     return video

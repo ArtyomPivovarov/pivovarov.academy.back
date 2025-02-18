@@ -48,7 +48,6 @@ export class LearningModuleService {
           description: true,
           video: {
             id: true,
-            src: true,
             previewSrc: true
           },
         },

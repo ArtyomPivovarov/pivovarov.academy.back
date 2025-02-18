@@ -94,7 +94,6 @@ export class LessonService {
         },
         video: {
           id: true,
-          src: true,
           previewSrc: true
         }
       },
@@ -115,11 +114,6 @@ export class LessonService {
     { moduleId, videoId, ...restUpdateLessonDto }: UpdateLessonDto
   ): Promise<Lesson> {
     try {
-      console.log({
-        id,
-        moduleId,
-        videoId
-      })
       if (moduleId) {
         const learningModule = await this.learningModuleRepository.findOneBy({
           id: moduleId
@@ -138,7 +132,6 @@ export class LessonService {
           throw new BadRequestException('Video not found')
         }
       }
-      console.log('beforeUpdate')
       const updateResult = await this.lessonRepository.update(id, {
         ...restUpdateLessonDto,
         learningModule: moduleId
@@ -152,7 +145,6 @@ export class LessonService {
             }
           : undefined
       })
-      console.log('updateResult', updateResult)
       if (!updateResult.affected) {
         throw new NotFoundException('Lesson not found')
       }

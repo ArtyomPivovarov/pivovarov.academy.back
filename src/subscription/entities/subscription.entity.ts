@@ -8,6 +8,7 @@ import {
   UpdateDateColumn
 } from 'typeorm'
 import { User } from '@/user/entities/user.entity'
+import { SubscriptionLevel } from '@/subscription/subscription.enum'
 
 @Entity()
 export class Subscription {
@@ -17,6 +18,13 @@ export class Subscription {
   @ManyToOne(() => User, user => user.subscriptions)
   @JoinColumn({ name: 'user_id' })
   user: User
+
+  @Column({
+    type: 'enum',
+    enum: SubscriptionLevel,
+    default: SubscriptionLevel.Pro
+  })
+  level: SubscriptionLevel
 
   @Column({ type: 'timestamp', name: 'start_date' })
   startDate: Date
