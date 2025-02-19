@@ -1,17 +1,15 @@
-import { IsDateString, IsEnum, IsInt, IsOptional } from 'class-validator'
-import { SubscriptionLevel } from '@/subscription/subscription.enum'
+import { IsDateString, IsInt } from 'class-validator'
 
 export class CreateSubscriptionDto {
   @IsInt()
   userId: number
 
-  @IsEnum(SubscriptionLevel)
-  level: SubscriptionLevel
+  @IsInt()
+  typeId: number
 
   @IsDateString()
   startDate: string
 
   @IsDateString()
-  @IsOptional()
-  endDate?: string
+  endDate: string
 }

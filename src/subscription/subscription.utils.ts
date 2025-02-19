@@ -1,12 +1,19 @@
-import { SubscriptionLevel } from '@/subscription/subscription.enum'
+import { SubscriptionPeriod } from '@/subscription/subscription.enum'
 
 export function checkSubscriptionLevel(
-  currentLevel: SubscriptionLevel,
-  requiredLevel: SubscriptionLevel
+  currentLevel: number,
+  requiredLevel: number
 ) {
-  const levels = Object.values(SubscriptionLevel)
-  return (
-    levels.findIndex(el => el === currentLevel) >=
-    levels.findIndex(el => el === requiredLevel)
-  )
+  return currentLevel >= requiredLevel
+}
+
+export function getDurationByPeriod(period: SubscriptionPeriod) {
+  switch (period) {
+    case SubscriptionPeriod.Month:
+      return 30 * 24 * 60 * 60 * 1000
+    case SubscriptionPeriod.Year:
+      return 365 * 24 * 60 * 60 * 1000
+    default:
+      throw new Error('Unknown period')
+  }
 }

@@ -8,7 +8,7 @@ import {
   UpdateDateColumn
 } from 'typeorm'
 import { User } from '@/user/entities/user.entity'
-import { SubscriptionLevel } from '@/subscription/subscription.enum'
+import { SubscriptionType } from '@/subscription/entities/subscription-type.entity'
 
 @Entity()
 export class Subscription {
@@ -19,17 +19,17 @@ export class Subscription {
   @JoinColumn({ name: 'user_id' })
   user: User
 
-  @Column({
-    type: 'enum',
-    enum: SubscriptionLevel,
-    default: SubscriptionLevel.Pro
-  })
-  level: SubscriptionLevel
+  @ManyToOne(
+    () => SubscriptionType,
+    subscriptionType => subscriptionType.subscriptions
+  )
+  @JoinColumn({ name: 'type_id' })
+  type: SubscriptionType
 
   @Column({ type: 'timestamp', name: 'start_date' })
   startDate: Date
 
-  @Column({ type: 'timestamp', name: 'end_date', nullable: true })
+  @Column({ type: 'timestamp', name: 'end_date' })
   endDate: Date
 
   @CreateDateColumn({ name: 'created_at' })

@@ -1,10 +1,6 @@
-import { IsEnum, IsNumber } from 'class-validator'
-import { SubscriptionLevel } from '@/subscription/subscription.enum'
+import { IsNumber } from 'class-validator'
 
 export class BuySubscriptionDto {
   @IsNumber()
-  duration: number
-
-  @IsEnum(SubscriptionLevel)
-  level: SubscriptionLevel
+  typeId: number
 }

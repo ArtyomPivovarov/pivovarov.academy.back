@@ -41,6 +41,7 @@ export class LearningModuleService {
         published: true,
         createdAt: true,
         updatedAt: true,
+        subscriptionLevel: true,
         lessons: {
           id: true,
           title: true,
@@ -49,8 +50,8 @@ export class LearningModuleService {
           video: {
             id: true,
             previewSrc: true
-          },
-        },
+          }
+        }
       },
       order: {
         lessons: {

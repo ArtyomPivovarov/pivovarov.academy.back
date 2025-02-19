@@ -26,6 +26,7 @@ import { AuthRequest } from '@/auth/auth.types'
 import { BuySubscriptionDto } from '@/subscription/dto/buy-subscription.dto'
 import { Roles } from '@/role/roles.decorator'
 import { Role } from '@/role/role.enum'
+import { Public } from '@/auth/public.decorator'
 
 @ApiTags('subscription')
 @Controller('subscription')
@@ -89,12 +90,18 @@ export class SubscriptionController {
   @ApiOperation({ summary: 'Get your active subscription' })
   @ApiOkResponse({
     description: 'Active subscription',
-    type: Subscription
+    type: Subscription // TODO: add nullable and property
   })
-  @ApiNotFoundResponse({ description: 'Subscription not found' })
   @Roles(Role.User)
   @Get('active')
   getActive(@Request() req: AuthRequest) {
     return this.subscriptionService.getActive(req.user.id)
+  }
+
+  @ApiOperation({ summary: 'Get subscription types' })
+  @Public()
+  @Get('types')
+  getTypes() {
+    return this.subscriptionService.getTypes()
   }
 }

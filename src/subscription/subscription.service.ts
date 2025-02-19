@@ -12,12 +12,16 @@ import { User } from '@/user/entities/user.entity'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
 import { SubscriptionListDto } from '@/subscription/dto/subscription-list.dto'
 import { BuySubscriptionDto } from '@/subscription/dto/buy-subscription.dto'
+import { SubscriptionType } from '@/subscription/entities/subscription-type.entity'
+import { getDurationByPeriod } from '@/subscription/subscription.utils'
 
 @Injectable()
 export class SubscriptionService {
   constructor(
     @InjectRepository(Subscription)
     private subscriptionRepository: Repository<Subscription>,
+    @InjectRepository(SubscriptionType)
+    private subscriptionTypeRepository: Repository<SubscriptionType>,
     @InjectRepository(User)
     private userRepository: Repository<User>
   ) {}
@@ -54,10 +58,17 @@ export class SubscriptionService {
             user: {
               id: true,
               email: true
+            },
+            type: {
+              id: true,
+              title: true,
+              slug: true,
+              level: true
             }
           },
           relations: {
-            user: true
+            user: true,
+            type: true
           }
         })
 
@@ -86,13 +97,15 @@ export class SubscriptionService {
 
   async update(
     id: number,
-    updateSubscriptionDto: UpdateSubscriptionDto
+    { typeId, ...restUpdateDto }: UpdateSubscriptionDto
   ): Promise<Subscription> {
     try {
-      const updateResult = await this.subscriptionRepository.update(
-        id,
-        updateSubscriptionDto
-      )
+      const updateResult = await this.subscriptionRepository.update(id, {
+        type: {
+          id: typeId
+        },
+        ...restUpdateDto
+      })
       if (!updateResult.affected) {
         throw new NotFoundException('Subscription not found')
       }
@@ -109,7 +122,7 @@ export class SubscriptionService {
 
   async buy(
     userId: number,
-    { duration, level }: BuySubscriptionDto
+    { typeId }: BuySubscriptionDto
   ): Promise<Subscription> {
     try {
       // TODO: payment processing
@@ -118,23 +131,44 @@ export class SubscriptionService {
         user: {
           id: userId
         },
+        type: {
+          id: typeId
+        },
         endDate: MoreThanOrEqual(new Date())
       })
-      if (activeSubscription && activeSubscription.level === level) {
-        return this.subscriptionRepository.save({
-          user: {
-            id: userId
-          },
-          startDate: activeSubscription.startDate,
-          endDate: new Date(activeSubscription.endDate.getTime() + duration)
+      console.log({
+        activeSubscription
+      })
+
+      const type =
+        activeSubscription?.type ||
+        (await this.subscriptionTypeRepository.findOneByOrFail({
+          id: typeId
+        }))
+      const duration = getDurationByPeriod(type.period)
+
+      if (activeSubscription) {
+        const endDate = new Date(
+          activeSubscription.endDate.getTime() + duration
+        )
+
+        await this.subscriptionRepository.update(activeSubscription.id, {
+          endDate
         })
+
+        return {
+          ...activeSubscription,
+          endDate
+        }
       }
 
       return this.subscriptionRepository.save({
         user: {
           id: userId
         },
-        level,
+        type: {
+          id: typeId
+        },
         startDate: new Date(),
         endDate: new Date(new Date().getTime() + duration)
       })
@@ -143,17 +177,46 @@ export class SubscriptionService {
     }
   }
 
-  async getActive(userId: number): Promise<Subscription> {
-    const subscription = await this.subscriptionRepository.findOneBy({
-      user: {
-        id: userId
+  async getActive(
+    userId: number
+  ): Promise<{ subscription: Subscription | null }> {
+    const subscriptions = await this.subscriptionRepository.find({
+      where: {
+        user: {
+          id: userId
+        },
+        endDate: MoreThanOrEqual(new Date())
       },
-      endDate: MoreThanOrEqual(new Date())
+      select: {
+        id: true,
+        type: {
+          id: true,
+          slug: true,
+          title: true,
+          level: true,
+          period: true
+        },
+        startDate: true,
+        endDate: true
+      },
+      relations: {
+        type: true
+      }
     })
-    if (!subscription) {
-      throw new NotFoundException('Subscription not found')
+    if (!subscriptions.length) {
+      return {
+        subscription: null
+      }
     }
 
-    return subscription
+    return {
+      subscription: subscriptions.reduce((prev, current) =>
+        prev && prev.type.level > current.type.level ? prev : current
+      )
+    }
+  }
+
+  async getTypes(): Promise<SubscriptionType[]> {
+    return this.subscriptionTypeRepository.find()
   }
 }

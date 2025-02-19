@@ -12,7 +12,6 @@ import {
   LearningModuleTechnology,
   LearningModuleType
 } from '@/learning-module/learning-module.enum'
-import { SubscriptionLevel } from '@/subscription/subscription.enum'
 
 export class CreateLearningModuleDto {
   @MaxLength(255)
@@ -41,6 +40,5 @@ export class CreateLearningModuleDto {
   published?: boolean
 
   @IsOptional()
-  @IsEnum(SubscriptionLevel)
-  subscriptionLevel?: SubscriptionLevel
+  subscriptionLevel?: number
 }

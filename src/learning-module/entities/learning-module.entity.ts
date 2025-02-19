@@ -12,7 +12,6 @@ import {
   LearningModuleType
 } from '@/learning-module/learning-module.enum'
 import { Lesson } from '@/lesson/entities/lesson.entity'
-import { SubscriptionLevel } from '@/subscription/subscription.enum'
 
 @Entity()
 export class LearningModule {
@@ -58,8 +57,8 @@ export class LearningModule {
   @Column({ nullable: true })
   published: boolean
 
-  @Column({ type: 'enum', enum: SubscriptionLevel, nullable: true })
-  subscriptionLevel: SubscriptionLevel
+  @Column({ name: 'subscription_level', type: 'int', default: 0 })
+  subscriptionLevel: number
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date

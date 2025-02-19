@@ -7,19 +7,18 @@ import { CreateVideoDto } from './dto/create-video.dto'
 import { UpdateVideoDto } from './dto/update-video.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Video } from '@/video/entities/video.entity'
-import { MoreThanOrEqual, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { PaginationQueryDto } from '@/pagination/dto/pagination-query.dto'
 import { VideosListDto } from '@/video/dto/videos-list.dto'
-import { Subscription } from '@/subscription/entities/subscription.entity'
 import { checkSubscriptionLevel } from '@/subscription/subscription.utils'
+import { SubscriptionService } from '@/subscription/subscription.service'
 
 @Injectable()
 export class VideoService {
   constructor(
     @InjectRepository(Video)
     private videoRepository: Repository<Video>,
-    @InjectRepository(Subscription)
-    private subscriptionRepository: Repository<Subscription>
+    private subscriptionService: SubscriptionService
   ) {}
 
   async create(createVideoDto: CreateVideoDto): Promise<Video> {
@@ -73,20 +72,15 @@ export class VideoService {
     if (!video) {
       throw new NotFoundException('Video not found')
     }
-    if (video.lesson.learningModule.subscriptionLevel === null) {
+    if (!video.lesson.learningModule.subscriptionLevel) {
       return video
     }
 
-    const subscription = await this.subscriptionRepository.findOneBy({
-      user: {
-        id: userId
-      },
-      endDate: MoreThanOrEqual(new Date())
-    })
+    const { subscription } = await this.subscriptionService.getActive(userId)
     if (
       !subscription ||
       !checkSubscriptionLevel(
-        subscription.level,
+        subscription.type.level,
         video.lesson.learningModule.subscriptionLevel
       )
     ) {

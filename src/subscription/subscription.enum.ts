@@ -1,5 +1,4 @@
-export enum SubscriptionLevel {
-  // Important: ordering sensitive
-  Pro = 'pro',
-  Diamond = 'diamond'
+export enum SubscriptionPeriod {
+  Month = 'month',
+  Year = 'year'
 }
