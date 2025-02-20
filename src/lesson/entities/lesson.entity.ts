@@ -35,7 +35,7 @@ export class Lesson {
     nullable: true
   })
   @JoinColumn({ name: 'video_id' })
-  video: Video
+  video: Video | null
 
   @Column({ length: 3000, nullable: true })
   description?: string

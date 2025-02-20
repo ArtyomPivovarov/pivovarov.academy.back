@@ -59,7 +59,9 @@ export class VideoService {
           title: true,
           learningModule: {
             id: true,
-            subscriptionLevel: true
+            subscriptionType: {
+              level: true
+            }
           }
         }
       },
@@ -72,7 +74,7 @@ export class VideoService {
     if (!video) {
       throw new NotFoundException('Video not found')
     }
-    if (!video.lesson.learningModule.subscriptionLevel) {
+    if (!video.lesson.learningModule.subscriptionType?.level) {
       return video
     }
 
@@ -81,7 +83,7 @@ export class VideoService {
       !subscription ||
       !checkSubscriptionLevel(
         subscription.type.level,
-        video.lesson.learningModule.subscriptionLevel
+        video.lesson.learningModule.subscriptionType.level
       )
     ) {
       throw new BadRequestException('Subscription not found')

@@ -27,6 +27,26 @@ export class LearningModuleService {
       },
       order: {
         order: 'ASC'
+      },
+      select: {
+        id: true,
+        order: true,
+        level: true,
+        title: true,
+        description: true,
+        published: true,
+        createdAt: true,
+        updatedAt: true,
+        technologies: true,
+        subscriptionType: {
+          id: true,
+          title: true,
+          slug: true,
+          level: true
+        }
+      },
+      relations: {
+        subscriptionType: true
       }
     })
   }
@@ -41,7 +61,12 @@ export class LearningModuleService {
         published: true,
         createdAt: true,
         updatedAt: true,
-        subscriptionLevel: true,
+        subscriptionType: {
+          id: true,
+          title: true,
+          slug: true,
+          level: true
+        },
         lessons: {
           id: true,
           title: true,
@@ -59,6 +84,7 @@ export class LearningModuleService {
         }
       },
       relations: {
+        subscriptionType: true,
         lessons: {
           video: true
         }

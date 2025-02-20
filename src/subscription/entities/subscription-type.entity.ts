@@ -9,6 +9,7 @@ import {
 } from 'typeorm'
 import { SubscriptionPeriod } from '@/subscription/subscription.enum'
 import { Subscription } from '@/subscription/entities/subscription.entity'
+import { LearningModule } from '@/learning-module/entities/learning-module.entity'
 
 @Unique('UQ_SLUG', ['slug'])
 @Entity()
@@ -40,6 +41,12 @@ export class SubscriptionType {
 
   @OneToMany(() => Subscription, subscription => subscription.type)
   subscriptions: Subscription[]
+
+  @OneToMany(
+    () => LearningModule,
+    learningModule => learningModule.subscriptionType
+  )
+  learningModules: LearningModule[]
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date
