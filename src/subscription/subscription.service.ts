@@ -14,6 +14,7 @@ import { SubscriptionListDto } from '@/subscription/dto/subscription-list.dto'
 import { BuySubscriptionDto } from '@/subscription/dto/buy-subscription.dto'
 import { SubscriptionType } from '@/subscription/entities/subscription-type.entity'
 import { getDurationByPeriod } from '@/subscription/subscription.utils'
+import { FindAllQuerySubscriptionTypeDto } from '@/subscription/dto/find-all-query-subscription-type.dto'
 
 @Injectable()
 export class SubscriptionService {
@@ -216,7 +217,16 @@ export class SubscriptionService {
     }
   }
 
-  async getTypes(): Promise<SubscriptionType[]> {
-    return this.subscriptionTypeRepository.find()
+  async getTypes(
+    query: FindAllQuerySubscriptionTypeDto
+  ): Promise<SubscriptionType[]> {
+    return this.subscriptionTypeRepository.find({
+      where: {
+        ...query
+      },
+      order: {
+        level: 'ASC'
+      }
+    })
   }
 }

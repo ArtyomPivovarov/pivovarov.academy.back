@@ -27,6 +27,7 @@ import { BuySubscriptionDto } from '@/subscription/dto/buy-subscription.dto'
 import { Roles } from '@/role/roles.decorator'
 import { Role } from '@/role/role.enum'
 import { Public } from '@/auth/public.decorator'
+import { FindAllQuerySubscriptionTypeDto } from '@/subscription/dto/find-all-query-subscription-type.dto'
 
 @ApiTags('subscription')
 @Controller('subscription')
@@ -101,7 +102,7 @@ export class SubscriptionController {
   @ApiOperation({ summary: 'Get subscription types' })
   @Public()
   @Get('types')
-  getTypes() {
-    return this.subscriptionService.getTypes()
+  getTypes(@Query() query: FindAllQuerySubscriptionTypeDto) {
+    return this.subscriptionService.getTypes(query)
   }
 }
