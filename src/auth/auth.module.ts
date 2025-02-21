@@ -8,6 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtStrategy } from '@/auth/jwt.strategy'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from '@/user/entities/user.entity'
+import { VerificationCode } from '@/auth/entities/verification-code.entity'
+import { MailService } from '@/mail/mail.service'
 
 @Module({
   imports: [
@@ -22,9 +24,9 @@ import { User } from '@/user/entities/user.entity'
       }),
       inject: [ConfigService]
     }),
-    TypeOrmModule.forFeature([User])
+    TypeOrmModule.forFeature([User, VerificationCode])
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, MailService],
   controllers: [AuthController],
   exports: [AuthService]
 })

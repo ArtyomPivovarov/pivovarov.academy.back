@@ -29,6 +29,9 @@ export class User {
   @Column({ name: 'refresh_token', nullable: true })
   refreshToken: string
 
+  @Column({ name: 'is_email_verified', default: false })
+  isEmailVerified: boolean
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date
 

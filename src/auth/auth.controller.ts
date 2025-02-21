@@ -13,6 +13,8 @@ import { RegisterUserDto } from '@/user/dto/register-user.dto'
 import { UserInfoDto } from '@/user/dto/user-info.dto'
 import { FastifyRequest } from 'fastify'
 import { User } from '@/user/entities/user.entity'
+import { VerifyEmailDto } from '@/auth/dto/verify-email.dto'
+import { ResendVerificationDto } from '@/auth/dto/resend-verification.dto'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -57,6 +59,22 @@ export class AuthController {
   @Post('register')
   async register(@Body() registerUserDto: RegisterUserDto) {
     return this.authService.register(registerUserDto)
+  }
+
+  @Public()
+  @Post('verify-email')
+  async verifyEmail(
+    @Body() body: VerifyEmailDto
+  ): Promise<SuccessAuthResponse> {
+    return this.authService.verifyEmail(body.email, body.code)
+  }
+
+  @Public()
+  @Post('resend-verification')
+  async resendVerification(
+    @Body() body: ResendVerificationDto
+  ): Promise<{ message: string }> {
+    return this.authService.resendVerificationCode(body.email)
   }
 
   @ApiOperation({ summary: 'Refresh tokens' })

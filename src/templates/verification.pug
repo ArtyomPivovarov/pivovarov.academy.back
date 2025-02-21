@@ -1,0 +1,31 @@
+doctype html
+html(lang="ru")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        style.
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            .code {
+                font-size: 24px;
+                font-weight: bold;
+                color: #FBBF24;;
+                text-align: center;
+                padding: 20px;
+                background: #f5f5f5;
+                border-radius: 5px;
+                margin: 20px 0;
+            }
+    body
+        h1 Подтверждение регистрации
+        p Здравствуйте!
+        p Для завершения регистрации, пожалуйста, введите следующий код подтверждения:
+        .code #{verificationCode}
+        p Код действителен в течение 15 минут.
+        p Если вы не запрашивали регистрацию, просто проигнорируйте это письмо.
