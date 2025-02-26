@@ -67,7 +67,9 @@ export class VideoService {
       },
       relations: {
         lesson: {
-          learningModule: true
+          learningModule: {
+            subscriptionType: true
+          }
         }
       }
     })
