@@ -1,3 +1,5 @@
+# FIXME use a multi-stage build to reduce the size of the final image and speed up build times
+
 # Use an official Node runtime as a parent image
 FROM node:20-alpine
 
@@ -24,6 +26,8 @@ COPY . .
 
 # Build the Nuxt 3 application
 RUN pnpm build
+
+# FIXME do not run as root
 
 # Expose the port the app runs on
 EXPOSE 4200

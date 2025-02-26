@@ -67,7 +67,7 @@ export class AuthService {
   }
 
   private async sendVerificationCode(email: string): Promise<void> {
-    const code = Math.floor(100000 + Math.random() * 900000).toString()
+    const code = Math.floor(100000 + Math.random() * 900000).toString() // crypto crypto.randomBytes()
 
     await this.verificationCodeRepository.delete({ email })
     await this.verificationCodeRepository.save({
