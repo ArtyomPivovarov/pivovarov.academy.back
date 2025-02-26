@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Request, Body, Get } from '@nestjs/common'
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { LocalAuthGuard } from '@/auth/local-auth.guard'
 import { AuthService } from '@/auth/auth.service'
 import {
@@ -15,6 +15,8 @@ import { FastifyRequest } from 'fastify'
 import { User } from '@/user/entities/user.entity'
 import { VerifyEmailDto } from '@/auth/dto/verify-email.dto'
 import { ResendVerificationDto } from '@/auth/dto/resend-verification.dto'
+import { Roles } from '@/role/roles.decorator'
+import { Role } from '@/role/role.enum'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -77,9 +79,9 @@ export class AuthController {
     return this.authService.resendVerificationCode(body.email)
   }
 
+  @Public()
   @ApiOperation({ summary: 'Refresh tokens' })
   @ApiOkResponse({ description: 'User info', type: UserInfoDto })
-  @Public()
   @Post('refresh')
   refresh(@Request() req: FastifyRequest) {
     return this.authService.refresh(
@@ -89,6 +91,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Get user profile' })
   @ApiOkResponse({ description: 'User info', type: UserInfoDto })
+  @Roles(Role.Admin, Role.User)
   @Get('me')
   getMe(@Request() req: AuthRequest) {
     return req.user
