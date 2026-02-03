@@ -1,5 +1,11 @@
 # Pivovarov Academy Backend
 
+[![NestJS](https://img.shields.io/badge/NestJS-10.x-E0234E?logo=nestjs&logoColor=white)](https://nestjs.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.1-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-6BA539?logo=openapiinitiative&logoColor=white)](./swagger.json)
+[![API Endpoints](https://img.shields.io/badge/API%20Endpoints-35-blue)](#-api-endpoints)
+[![License](https://img.shields.io/badge/License-UNLICENSED-red)](LICENSE)
+
 Backend API for Pivovarov Academy - an online learning platform built with NestJS and TypeScript.
 
 > **Frontend Repository**: [pivovarov.academy.front](https://github.com/ArtyomPivovarov/pivovarov.academy.front)
@@ -157,18 +163,55 @@ The API will be available at `http://localhost:4200/api`
 
 ## 📚 API Documentation
 
-### Swagger/OpenAPI Specification
+### 🏗️ API Architecture
 
-The API documentation is available in multiple formats:
+```
+📦 Pivovarov Academy API (35 endpoints)
+├── 🔐 Authentication (6)
+│   ├── Login & Registration
+│   ├── Email Verification
+│   └── Token Management
+├── 👥 Users (4)
+│   └── User CRUD Operations
+├── 📖 Learning Modules (5)
+│   └── Course & Intensive Management
+├── 📚 Lessons (5)
+│   └── Lesson CRUD & Publishing
+├── 🎥 Videos (5)
+│   └── Video Content Management
+├── 💳 Subscriptions (7)
+│   ├── Subscription Plans
+│   └── Purchase & Management
+└── 📊 Progress Tracking (3)
+    └── Lesson Completion
+```
 
-- **OpenAPI JSON**: [`swagger.json`](./swagger.json) - Static OpenAPI 3.0 specification file
-- **Interactive Swagger UI**: [http://localhost:4200/api](http://localhost:4200/api) (when app is running)
+### 📊 API Overview
 
-The Swagger documentation provides:
-- Complete API endpoint reference
-- Request/response schemas
-- Authentication requirements
-- Interactive API testing
+<table>
+<tr>
+<td width="50%">
+
+#### 📈 Statistics
+- **Total Endpoints**: 35
+- **Public**: 9 🌐
+- **Protected**: 26 🔒
+- **Modules**: 7
+
+</td>
+<td width="50%">
+
+#### 🔗 Quick Links
+- 📖 **[Full API Docs →](./API_DOCUMENTATION.md)**
+- 📄 **[Swagger Editor →](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ArtyomPivovarov/pivovarov.academy.back/main/swagger.json)**
+- 🚀 **[Local Swagger UI →](http://localhost:4200/api)**
+- 📋 **[OpenAPI Spec →](./swagger.json)**
+
+</td>
+</tr>
+</table>
+
+> 💡 **Tip**: For complete endpoint reference, schemas, and examples, see **[API_DOCUMENTATION.md](./API_DOCUMENTATION.md)**
 
 ### Swagger Configuration
 
@@ -185,9 +228,9 @@ const document = SwaggerModule.createDocument(app, config)
 SwaggerModule.setup('api', app, document)
 ```
 
-### Generating Full Swagger Documentation
+### Generating Swagger Documentation
 
-To generate a complete `swagger.json` file with all endpoints:
+To regenerate the `swagger.json` file with all endpoints:
 
 1. **Start the application**
 
@@ -206,25 +249,21 @@ pnpm run start:dev
 pnpm run export:swagger
 ```
 
-This will fetch the complete API documentation from the running application and save it to `swagger.json`.
-
 ### Authentication in Swagger
 
-To test protected endpoints:
+To test protected endpoints in Swagger UI:
 
 1. Navigate to [http://localhost:4200/api](http://localhost:4200/api)
-2. Click the **Authorize** button (lock icon)
+2. Click the **Authorize** button (🔒 lock icon)
 3. Enter your JWT token in the format: `Bearer <your_token>`
 4. Click **Authorize** to apply the token to all requests
 
-### API Base Path
+### API Base Configuration
 
-All API endpoints are prefixed with `/api`:
-
-- Base URL: `http://localhost:4200/api`
-- Example: `http://localhost:4200/api/users`
-- Swagger UI: `http://localhost:4200/api`
-- Swagger JSON: `http://localhost:4200/api-json`
+- **Base URL**: `http://localhost:4200/api`
+- **Swagger UI**: `http://localhost:4200/api`
+- **OpenAPI JSON**: `http://localhost:4200/api-json`
+- **Production**: `https://api.pivovarov.academy/api`
 
 ## 📁 Project Structure
 
@@ -346,6 +385,7 @@ docker run -p 4200:4200 --env-file .env pivovarov-academy-backend
 | `pnpm run test:e2e` | Run E2E tests |
 | `pnpm run seed` | Seed the database |
 | `pnpm run export:swagger` | Export Swagger documentation to swagger.json |
+| `pnpm run docs:api` | Generate API documentation markdown from swagger.json |
 
 ## 🔗 Related Projects
 
