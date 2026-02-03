@@ -10,22 +10,6 @@ Backend API for Pivovarov Academy - an online learning platform built with NestJ
 
 > **Frontend Repository**: [pivovarov.academy.front](https://github.com/ArtyomPivovarov/pivovarov.academy.front)
 
-## 📋 Table of Contents
-
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Running the Application](#running-the-application)
-- [API Documentation](#api-documentation)
-- [Project Structure](#project-structure)
-- [Database](#database)
-- [Testing](#testing)
-- [Docker](#docker)
-- [Scripts](#scripts)
-- [Related Projects](#related-projects)
-
 ## ✨ Features
 
 - **Authentication & Authorization**
@@ -263,7 +247,6 @@ To test protected endpoints in Swagger UI:
 - **Base URL**: `http://localhost:4200/api`
 - **Swagger UI**: `http://localhost:4200/api`
 - **OpenAPI JSON**: `http://localhost:4200/api-json`
-- **Production**: `https://api.pivovarov.academy/api`
 
 ## 📁 Project Structure
 
