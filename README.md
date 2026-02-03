@@ -1,73 +1,356 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Pivovarov Academy Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend API for Pivovarov Academy - an online learning platform built with NestJS and TypeScript.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+> **Frontend Repository**: [pivovarov.academy.front](https://github.com/ArtyomPivovarov/pivovarov.academy.front)
 
-## Description
+## 📋 Table of Contents
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running the Application](#running-the-application)
+- [API Documentation](#api-documentation)
+- [Project Structure](#project-structure)
+- [Database](#database)
+- [Testing](#testing)
+- [Docker](#docker)
+- [Scripts](#scripts)
+- [Related Projects](#related-projects)
 
-## Installation
+## ✨ Features
+
+- **Authentication & Authorization**
+  - JWT-based authentication
+  - Email verification system
+  - Role-based access control (RBAC)
+  - Google OAuth integration
+
+- **Learning Management**
+  - Learning modules management
+  - Lessons and video content
+  - Student progress tracking
+  - Subscription management
+
+- **User Management**
+  - User registration and authentication
+  - Profile management
+  - User roles (admin, instructor, student)
+
+- **Subscription System**
+  - Multiple subscription types
+  - Subscription purchase and management
+  - Access control based on subscriptions
+
+- **Email Notifications**
+  - Email verification
+  - Transactional emails with Pug templates
+
+## 🛠 Tech Stack
+
+- **Framework**: [NestJS](https://nestjs.com/) 10.x
+- **Runtime**: Node.js with TypeScript
+- **Web Server**: [Fastify](https://www.fastify.io/)
+- **Database**: PostgreSQL
+- **ORM**: [TypeORM](https://typeorm.io/)
+- **Authentication**: JWT, Passport
+- **Validation**: class-validator, class-transformer
+- **API Documentation**: Swagger/OpenAPI
+- **Email**: Nodemailer
+- **Template Engine**: Pug
+- **Package Manager**: pnpm
+
+## 📦 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (v20 or higher)
+- **pnpm** (v8 or higher)
+- **PostgreSQL** (v14 or higher)
+- **Docker & Docker Compose** (optional, for containerized deployment)
+
+## 🚀 Installation
+
+1. **Clone the repository**
 
 ```bash
-$ pnpm install
+git clone <repository-url>
+cd pivovarov.academy.back
 ```
 
-## Running the app
+2. **Install dependencies**
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+pnpm install
 ```
 
-## Test
+3. **Set up environment variables**
+
+Create a `.env` file in the root directory based on `.env.example`:
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+cp .env.example .env
 ```
 
-## Support
+Then configure your environment variables (see [Configuration](#configuration) section).
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## ⚙️ Configuration
 
-## Stay in touch
+Configure the following environment variables in your `.env` file:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```env
+# Application
+PORT=4200
+NODE_ENV=development
 
-## License
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_DATABASE=pivovarov_academy
 
-Nest is [MIT licensed](LICENSE).
+# JWT
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRES_IN=7d
+
+# Email
+MAIL_HOST=smtp.example.com
+MAIL_PORT=587
+MAIL_USER=your_email@example.com
+MAIL_PASSWORD=your_email_password
+MAIL_FROM=noreply@pivovarov.academy
+
+# Google OAuth (optional)
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Frontend URL (for email links)
+FRONTEND_URL=http://localhost:3000
+```
+
+## 🏃 Running the Application
+
+### Development Mode
+
+```bash
+# Start with watch mode (recommended for development)
+pnpm run start:dev
+
+# Start with debug mode
+pnpm run start:debug
+```
+
+### Production Mode
+
+```bash
+# Build the application
+pnpm run build
+
+# Start production server
+pnpm run start:prod
+```
+
+The API will be available at `http://localhost:4200/api`
+
+## 📚 API Documentation
+
+### Swagger/OpenAPI Specification
+
+The API documentation is available in multiple formats:
+
+- **OpenAPI JSON**: [`swagger.json`](./swagger.json) - Static OpenAPI 3.0 specification file
+- **Interactive Swagger UI**: [http://localhost:4200/api](http://localhost:4200/api) (when app is running)
+
+The Swagger documentation provides:
+- Complete API endpoint reference
+- Request/response schemas
+- Authentication requirements
+- Interactive API testing
+
+### Swagger Configuration
+
+The API documentation is automatically generated using `@nestjs/swagger`. The configuration is set up in `src/main.ts`:
+
+```typescript
+const config = new DocumentBuilder()
+  .addBearerAuth()
+  .setTitle('pivovovarov.academy.back')
+  .setVersion('0.0.2')
+  .build()
+
+const document = SwaggerModule.createDocument(app, config)
+SwaggerModule.setup('api', app, document)
+```
+
+### Generating Full Swagger Documentation
+
+To generate a complete `swagger.json` file with all endpoints:
+
+1. **Start the application**
+
+```bash
+# Using Docker Compose (recommended)
+docker-compose up -d
+
+# Or manually (requires PostgreSQL running)
+pnpm run start:dev
+```
+
+2. **Export Swagger documentation**
+
+```bash
+# In another terminal, export the swagger.json
+pnpm run export:swagger
+```
+
+This will fetch the complete API documentation from the running application and save it to `swagger.json`.
+
+### Authentication in Swagger
+
+To test protected endpoints:
+
+1. Navigate to [http://localhost:4200/api](http://localhost:4200/api)
+2. Click the **Authorize** button (lock icon)
+3. Enter your JWT token in the format: `Bearer <your_token>`
+4. Click **Authorize** to apply the token to all requests
+
+### API Base Path
+
+All API endpoints are prefixed with `/api`:
+
+- Base URL: `http://localhost:4200/api`
+- Example: `http://localhost:4200/api/users`
+- Swagger UI: `http://localhost:4200/api`
+- Swagger JSON: `http://localhost:4200/api-json`
+
+## 📁 Project Structure
+
+```
+src/
+├── auth/                    # Authentication module
+│   ├── dto/                # Auth DTOs
+│   ├── entities/           # Verification code entity
+│   ├── guards/             # JWT & Local guards
+│   └── strategies/         # Passport strategies
+├── config/                  # Configuration files
+├── learning-module/         # Learning modules CRUD
+├── lesson/                  # Lessons management
+├── lesson-progress/         # Student progress tracking
+├── mail/                    # Email service
+├── pagination/              # Pagination utilities
+├── role/                    # Role-based access control
+├── seeds/                   # Database seeders
+├── subscription/            # Subscription management
+├── templates/               # Email templates (Pug)
+├── user/                    # User management
+├── video/                   # Video content management
+├── app.module.ts           # Root module
+└── main.ts                 # Application entry point
+```
+
+## 🗄 Database
+
+### Setup
+
+1. **Create a PostgreSQL database**
+
+```sql
+CREATE DATABASE pivovarov_academy;
+```
+
+2. **Run migrations** (if available)
+
+```bash
+# TypeORM migrations will run automatically on application start
+pnpm run start:dev
+```
+
+3. **Seed the database** (optional)
+
+```bash
+pnpm run seed
+```
+
+### Entity Relationship
+
+The application includes the following main entities:
+
+- **User**: User accounts and profiles
+- **Role**: User roles (admin, instructor, student)
+- **LearningModule**: Course modules
+- **Lesson**: Individual lessons within modules
+- **Video**: Video content for lessons
+- **Subscription**: User subscriptions
+- **SubscriptionType**: Available subscription plans
+- **LessonProgress**: Student progress tracking
+- **VerificationCode**: Email verification codes
+
+## 🧪 Testing
+
+```bash
+# Unit tests
+pnpm run test
+
+# Watch mode
+pnpm run test:watch
+
+# E2E tests
+pnpm run test:e2e
+
+# Test coverage
+pnpm run test:cov
+```
+
+## 🐳 Docker
+
+### Development with Docker Compose
+
+```bash
+# Start all services (app + database)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+### Build Docker Image
+
+```bash
+# Build the image
+docker build -t pivovarov-academy-backend .
+
+# Run the container
+docker run -p 4200:4200 --env-file .env pivovarov-academy-backend
+```
+
+## 📜 Scripts
+
+| Command | Description |
+|---------|-------------|
+| `pnpm run start` | Start the application |
+| `pnpm run start:dev` | Start in watch mode |
+| `pnpm run start:debug` | Start in debug mode |
+| `pnpm run start:prod` | Start in production mode |
+| `pnpm run build` | Build the application |
+| `pnpm run format` | Format code with Prettier |
+| `pnpm run lint` | Lint and fix code with ESLint |
+| `pnpm run test` | Run unit tests |
+| `pnpm run test:watch` | Run tests in watch mode |
+| `pnpm run test:cov` | Run tests with coverage |
+| `pnpm run test:e2e` | Run E2E tests |
+| `pnpm run seed` | Seed the database |
+| `pnpm run export:swagger` | Export Swagger documentation to swagger.json |
+
+## 🔗 Related Projects
+
+- **Frontend Application**: [pivovarov.academy.front](https://github.com/ArtyomPivovarov/pivovarov.academy.front) - Nuxt 3 frontend with modern UI, video player, and subscription management
+
+## 📄 License
+
+This project is [UNLICENSED](LICENSE).

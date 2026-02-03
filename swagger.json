@@ -1,0 +1,2379 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/api/auth/login": {
+            "post": {
+                "operationId": "AuthController_login",
+                "summary": "Log in",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successfully authorized"
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/api/auth/register": {
+            "post": {
+                "operationId": "AuthController_register",
+                "summary": "Register",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterUserDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/api/auth/verify-email": {
+            "post": {
+                "operationId": "AuthController_verifyEmail",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VerifyEmailDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/api/auth/resend-verification": {
+            "post": {
+                "operationId": "AuthController_resendVerification",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResendVerificationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/api/auth/refresh": {
+            "post": {
+                "operationId": "AuthController_refresh",
+                "summary": "Refresh tokens",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "User info",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserInfoDto"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/api/auth/me": {
+            "get": {
+                "operationId": "AuthController_getMe",
+                "summary": "Get user profile",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "User info",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserInfoDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/user": {
+            "post": {
+                "operationId": "UserController_create",
+                "summary": "Create user",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUserDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserInfoDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "409": {
+                        "description": "User already exists"
+                    }
+                },
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "get": {
+                "operationId": "UserController_findAll",
+                "summary": "Get all users",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Users list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UsersListDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/user/{id}": {
+            "get": {
+                "operationId": "UserController_findOne",
+                "summary": "Get user by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User info",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserInfoDto"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "patch": {
+                "operationId": "UserController_update",
+                "summary": "Update user by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserInfoDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "409": {
+                        "description": "User already exists"
+                    }
+                },
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/lesson": {
+            "post": {
+                "operationId": "LessonController_create",
+                "summary": "Create lesson",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateLessonDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Lesson created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Lesson"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "tags": [
+                    "lesson"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "get": {
+                "operationId": "LessonController_findAll",
+                "summary": "Get all lessons",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lessons list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LessonsListDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "tags": [
+                    "lesson"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/lesson/{id}": {
+            "get": {
+                "operationId": "LessonController_findOne",
+                "summary": "Get lesson by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lesson",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Lesson"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Lesson not found"
+                    }
+                },
+                "tags": [
+                    "lesson"
+                ]
+            },
+            "patch": {
+                "operationId": "LessonController_update",
+                "summary": "Update lesson by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateLessonDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Lesson updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserInfoDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Lesson not found"
+                    }
+                },
+                "tags": [
+                    "lesson"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "LessonController_remove",
+                "summary": "Delete lesson by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lesson deleted"
+                    },
+                    "404": {
+                        "description": "Lesson not found"
+                    }
+                },
+                "tags": [
+                    "lesson"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/learning-module": {
+            "post": {
+                "operationId": "LearningModuleController_create",
+                "summary": "Create learning module",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateLearningModuleDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Learning module created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LearningModule"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "tags": [
+                    "learning-module"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "get": {
+                "operationId": "LearningModuleController_findAll",
+                "summary": "Get all learning modules",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "course",
+                                "intensive"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Learning modules list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/LearningModule"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "learning-module"
+                ]
+            }
+        },
+        "/api/learning-module/{id}": {
+            "get": {
+                "operationId": "LearningModuleController_findOne",
+                "summary": "Get learning module by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Learning module",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LearningModule"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Learning module not found"
+                    }
+                },
+                "tags": [
+                    "learning-module"
+                ]
+            },
+            "patch": {
+                "operationId": "LearningModuleController_update",
+                "summary": "Update learning module by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateLearningModuleDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Learning module updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LearningModule"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Learning module not found"
+                    }
+                },
+                "tags": [
+                    "learning-module"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "LearningModuleController_remove",
+                "summary": "Delete learning module by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Learning module deleted"
+                    },
+                    "404": {
+                        "description": "Learning module not found"
+                    }
+                },
+                "tags": [
+                    "learning-module"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/subscription": {
+            "post": {
+                "operationId": "SubscriptionController_create",
+                "summary": "Create subscription",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateSubscriptionDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Subscription created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "tags": [
+                    "subscription"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "get": {
+                "operationId": "SubscriptionController_findAll",
+                "summary": "Get all subscriptions",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subscriptions list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubscriptionListDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "tags": [
+                    "subscription"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/subscription/{id}": {
+            "get": {
+                "operationId": "SubscriptionController_findOne",
+                "summary": "Get subscription by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subscription",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Subscription not found"
+                    }
+                },
+                "tags": [
+                    "subscription"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "patch": {
+                "operationId": "SubscriptionController_update",
+                "summary": "Update subscription by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateSubscriptionDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Subscription updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Subscription not found"
+                    }
+                },
+                "tags": [
+                    "subscription"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/subscription/buy": {
+            "post": {
+                "operationId": "SubscriptionController_buy",
+                "summary": "Buy subscription by id",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BuySubscriptionDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Subscription bought",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "tags": [
+                    "subscription"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/subscription/active": {
+            "get": {
+                "operationId": "SubscriptionController_getActive",
+                "summary": "Get your active subscription",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Active subscription",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "subscription"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/subscription/types": {
+            "get": {
+                "operationId": "SubscriptionController_getTypes",
+                "summary": "Get subscription types",
+                "parameters": [
+                    {
+                        "name": "period",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "month",
+                                "year"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SubscriptionType"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "subscription"
+                ]
+            }
+        },
+        "/api/lesson-progress": {
+            "post": {
+                "operationId": "LessonProgressController_create",
+                "summary": "Create a new lesson progress",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateLessonProgressDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "The lesson progress has been successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LessonProgress"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": ""
+                    },
+                    "409": {
+                        "description": "The lesson progress already exists"
+                    }
+                },
+                "tags": [
+                    "lesson-progress"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/lesson-progress/{id}": {
+            "get": {
+                "operationId": "LessonProgressController_findOneById",
+                "summary": "Get lesson progress by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lesson progress",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LessonProgress"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Lesson progress not found"
+                    }
+                },
+                "tags": [
+                    "lesson-progress"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "LessonProgressController_remove",
+                "summary": "Delete lesson progress by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lesson progress removed"
+                    },
+                    "404": {
+                        "description": "Lesson progress not found"
+                    }
+                },
+                "tags": [
+                    "lesson-progress"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/video": {
+            "post": {
+                "operationId": "VideoController_create",
+                "summary": "Create video",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateVideoDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Video created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Video"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "tags": [
+                    "video"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "get": {
+                "operationId": "VideoController_findAll",
+                "summary": "Get all videos",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Videos list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VideosListDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "tags": [
+                    "video"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/video/{id}": {
+            "get": {
+                "operationId": "VideoController_findOne",
+                "summary": "Get video by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Video",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Video"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Video not found"
+                    }
+                },
+                "tags": [
+                    "video"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "patch": {
+                "operationId": "VideoController_update",
+                "summary": "Update video by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateVideoDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Video updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserInfoDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Video not found"
+                    }
+                },
+                "tags": [
+                    "video"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "VideoController_remove",
+                "summary": "Delete video by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Video deleted"
+                    },
+                    "404": {
+                        "description": "Video not found"
+                    }
+                },
+                "tags": [
+                    "video"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "pivovovarov.academy.back",
+        "description": "",
+        "version": "0.0.2",
+        "contact": {}
+    },
+    "tags": [],
+    "servers": [],
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "type": "http"
+            }
+        },
+        "schemas": {
+            "RegisterUserDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 6,
+                        "maxLength": 20
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ]
+            },
+            "VerifyEmailDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "code"
+                ]
+            },
+            "ResendVerificationDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email"
+                ]
+            },
+            "UserInfoDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "enum": [
+                            "admin",
+                            "user"
+                        ],
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "email",
+                    "role",
+                    "createdAt",
+                    "updatedAt"
+                ]
+            },
+            "CreateUserDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 6,
+                        "maxLength": 20
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "admin",
+                            "user"
+                        ]
+                    }
+                },
+                "required": [
+                    "email",
+                    "password",
+                    "role"
+                ]
+            },
+            "UsersListDto": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserInfoDto"
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "page": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "limit": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "totalItems": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "totalPages": {
+                                "required": true,
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "items",
+                    "meta"
+                ]
+            },
+            "UpdateUserDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "admin",
+                            "user"
+                        ]
+                    }
+                }
+            },
+            "CreateLessonDto": {
+                "type": "object",
+                "properties": {
+                    "moduleId": {
+                        "type": "number"
+                    },
+                    "title": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 255
+                    },
+                    "order": {
+                        "type": "number"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 3000
+                    },
+                    "videoId": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "moduleId",
+                    "title",
+                    "order"
+                ]
+            },
+            "SubscriptionType": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "level": {
+                        "type": "number"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "period": {
+                        "enum": [
+                            "month",
+                            "year"
+                        ],
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "subscriptions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Subscription"
+                        }
+                    },
+                    "learningModules": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LearningModule"
+                        }
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "slug",
+                    "level",
+                    "price",
+                    "period",
+                    "description",
+                    "subscriptions",
+                    "learningModules",
+                    "createdAt",
+                    "updatedAt"
+                ]
+            },
+            "Subscription": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/SubscriptionType"
+                    },
+                    "startDate": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "endDate": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "user",
+                    "type",
+                    "startDate",
+                    "endDate",
+                    "createdAt",
+                    "updatedAt"
+                ]
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "passwordHash": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "admin",
+                            "user"
+                        ]
+                    },
+                    "refreshToken": {
+                        "type": "string"
+                    },
+                    "isEmailVerified": {
+                        "type": "boolean"
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "subscriptions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Subscription"
+                        }
+                    },
+                    "lessonProgresses": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LessonProgress"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "email",
+                    "passwordHash",
+                    "role",
+                    "refreshToken",
+                    "isEmailVerified",
+                    "createdAt",
+                    "updatedAt",
+                    "subscriptions",
+                    "lessonProgresses"
+                ]
+            },
+            "LessonProgress": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "lesson": {
+                        "$ref": "#/components/schemas/Lesson"
+                    },
+                    "completedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "user",
+                    "lesson",
+                    "completedAt"
+                ]
+            },
+            "Video": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "lesson": {
+                        "$ref": "#/components/schemas/Lesson"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "src": {
+                        "type": "string"
+                    },
+                    "previewSrc": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "lesson",
+                    "title",
+                    "src",
+                    "previewSrc",
+                    "createdAt",
+                    "updatedAt"
+                ]
+            },
+            "Lesson": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "learningModule": {
+                        "$ref": "#/components/schemas/LearningModule"
+                    },
+                    "lessonProgresses": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LessonProgress"
+                        }
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "number"
+                    },
+                    "video": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Video"
+                            }
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "published": {
+                        "type": "boolean"
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "learningModule",
+                    "lessonProgresses",
+                    "title",
+                    "order",
+                    "video",
+                    "createdAt",
+                    "updatedAt"
+                ]
+            },
+            "LearningModule": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "lessons": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Lesson"
+                        }
+                    },
+                    "type": {
+                        "enum": [
+                            "course",
+                            "intensive"
+                        ],
+                        "type": "string"
+                    },
+                    "level": {
+                        "enum": [
+                            "trainee",
+                            "junior",
+                            "middle",
+                            "senior"
+                        ],
+                        "type": "string"
+                    },
+                    "technologies": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "html",
+                                "css",
+                                "javascript",
+                                "typescript",
+                                "sass",
+                                "angular-js",
+                                "react-js",
+                                "vue-js",
+                                "next-js",
+                                "nuxt-js",
+                                "node-js",
+                                "nest-js",
+                                "express",
+                                "mongodb",
+                                "mysql",
+                                "postgresql",
+                                "redis",
+                                "docker",
+                                "aws",
+                                "firebase",
+                                "flutter",
+                                "react-native",
+                                "electron",
+                                "graphql",
+                                "apollo",
+                                "rest",
+                                "websockets",
+                                "webrtc",
+                                "pwa",
+                                "monolith",
+                                "testing",
+                                "ci-cd",
+                                "devops",
+                                "git",
+                                "github",
+                                "gitlab",
+                                "vscode",
+                                "webstorm",
+                                "intellij-idea"
+                            ]
+                        }
+                    },
+                    "order": {
+                        "type": "number"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "published": {
+                        "type": "boolean"
+                    },
+                    "subscriptionType": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/SubscriptionType"
+                            }
+                        ]
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "lessons",
+                    "type",
+                    "level",
+                    "technologies",
+                    "order",
+                    "title",
+                    "published",
+                    "subscriptionType",
+                    "createdAt",
+                    "updatedAt"
+                ]
+            },
+            "LessonsListDto": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Lesson"
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "page": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "limit": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "totalItems": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "totalPages": {
+                                "required": true,
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "items",
+                    "meta"
+                ]
+            },
+            "UpdateLessonDto": {
+                "type": "object",
+                "properties": {
+                    "published": {
+                        "type": "boolean"
+                    },
+                    "moduleId": {
+                        "type": "number"
+                    },
+                    "title": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 255
+                    },
+                    "order": {
+                        "type": "number"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 3000
+                    },
+                    "videoId": {
+                        "type": "number"
+                    }
+                }
+            },
+            "CreateLearningModuleDto": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 255
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "course",
+                            "intensive"
+                        ]
+                    },
+                    "level": {
+                        "type": "string",
+                        "enum": [
+                            "trainee",
+                            "junior",
+                            "middle",
+                            "senior"
+                        ]
+                    },
+                    "technologies": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "html",
+                                "css",
+                                "javascript",
+                                "typescript",
+                                "sass",
+                                "angular-js",
+                                "react-js",
+                                "vue-js",
+                                "next-js",
+                                "nuxt-js",
+                                "node-js",
+                                "nest-js",
+                                "express",
+                                "mongodb",
+                                "mysql",
+                                "postgresql",
+                                "redis",
+                                "docker",
+                                "aws",
+                                "firebase",
+                                "flutter",
+                                "react-native",
+                                "electron",
+                                "graphql",
+                                "apollo",
+                                "rest",
+                                "websockets",
+                                "webrtc",
+                                "pwa",
+                                "monolith",
+                                "testing",
+                                "ci-cd",
+                                "devops",
+                                "git",
+                                "github",
+                                "gitlab",
+                                "vscode",
+                                "webstorm",
+                                "intellij-idea"
+                            ]
+                        }
+                    },
+                    "order": {
+                        "type": "number"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 3000
+                    },
+                    "published": {
+                        "type": "boolean"
+                    },
+                    "subscriptionLevel": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "title",
+                    "type",
+                    "level",
+                    "technologies",
+                    "order"
+                ]
+            },
+            "UpdateLearningModuleDto": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 255
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "course",
+                            "intensive"
+                        ]
+                    },
+                    "level": {
+                        "type": "string",
+                        "enum": [
+                            "trainee",
+                            "junior",
+                            "middle",
+                            "senior"
+                        ]
+                    },
+                    "technologies": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "html",
+                                "css",
+                                "javascript",
+                                "typescript",
+                                "sass",
+                                "angular-js",
+                                "react-js",
+                                "vue-js",
+                                "next-js",
+                                "nuxt-js",
+                                "node-js",
+                                "nest-js",
+                                "express",
+                                "mongodb",
+                                "mysql",
+                                "postgresql",
+                                "redis",
+                                "docker",
+                                "aws",
+                                "firebase",
+                                "flutter",
+                                "react-native",
+                                "electron",
+                                "graphql",
+                                "apollo",
+                                "rest",
+                                "websockets",
+                                "webrtc",
+                                "pwa",
+                                "monolith",
+                                "testing",
+                                "ci-cd",
+                                "devops",
+                                "git",
+                                "github",
+                                "gitlab",
+                                "vscode",
+                                "webstorm",
+                                "intellij-idea"
+                            ]
+                        }
+                    },
+                    "order": {
+                        "type": "number"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 3000
+                    },
+                    "published": {
+                        "type": "boolean"
+                    },
+                    "subscriptionLevel": {
+                        "type": "number"
+                    }
+                }
+            },
+            "CreateSubscriptionDto": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "number"
+                    },
+                    "typeId": {
+                        "type": "number"
+                    },
+                    "startDate": {
+                        "type": "string"
+                    },
+                    "endDate": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "userId",
+                    "typeId",
+                    "startDate",
+                    "endDate"
+                ]
+            },
+            "SubscriptionListDto": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Subscription"
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "page": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "limit": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "totalItems": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "totalPages": {
+                                "required": true,
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "items",
+                    "meta"
+                ]
+            },
+            "UpdateSubscriptionDto": {
+                "type": "object",
+                "properties": {
+                    "typeId": {
+                        "type": "number"
+                    },
+                    "startDate": {
+                        "type": "string"
+                    },
+                    "endDate": {
+                        "type": "string"
+                    }
+                }
+            },
+            "BuySubscriptionDto": {
+                "type": "object",
+                "properties": {
+                    "typeId": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "typeId"
+                ]
+            },
+            "CreateLessonProgressDto": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "number"
+                    },
+                    "lessonId": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "userId",
+                    "lessonId"
+                ]
+            },
+            "CreateVideoDto": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "src": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "previewSrc": {
+                        "type": "string",
+                        "maxLength": 200
+                    }
+                },
+                "required": [
+                    "title",
+                    "src",
+                    "previewSrc"
+                ]
+            },
+            "VideosListDto": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Video"
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "page": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "limit": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "totalItems": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "totalPages": {
+                                "required": true,
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "items",
+                    "meta"
+                ]
+            },
+            "UpdateVideoDto": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "src": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "previewSrc": {
+                        "type": "string",
+                        "maxLength": 200
+                    }
+                }
+            }
+        }
+    }
+}
